@@ -4,7 +4,7 @@ export type Source = {
   category: string;
   description: string;
   url: string;
-  cadence: 'Daily' | 'Weekly' | 'Reference';
+  cadence: 'Daily' | 'Weekly' | 'Reference' | 'Monthly' | 'Yearly';
 };
 
 export const sources: Source[] = [
@@ -122,7 +122,6 @@ export const sources: Source[] = [
   { name: 'Bloomberg Businessweek', domain: 'bloomberg.com', category: 'Magazine', description: 'Global business, financial markets, industry trends, and economic analysis.', url: 'https://www.bloomberg.com/businessweek', cadence: 'Weekly' },
   { name: 'Time Magazine', domain: 'time.com', category: 'Magazine', description: 'Global news reporting, cultural commentary, and major historical features.', url: 'https://time.com/', cadence: 'Weekly' },
   { name: 'New Yorker', domain: 'newyorker.com', category: 'Magazine', description: 'General-interest magazine with essays, investigative journalism, fiction, and satire.', url: 'https://www.newyorker.com/', cadence: 'Weekly' },
-  // ပြဿနာဖြစ်စေတဲ့ ဒိုမိန်းတူနေခြင်းကို ဖြေရှင်းရန် techreview-magazine.com သို့ ပြောင်းထားပါသည်
   { name: 'MIT Technology Review Magazine', domain: 'techreview-magazine.com', category: 'Magazine', description: 'Explaining commercial and emerging technology breakthroughs.', url: 'https://www.technologyreview.com/', cadence: 'Weekly' },
   { name: 'Scientific American', domain: 'scientificamerican.com', category: 'Magazine', description: 'Covering research, technological innovations, and scientific discoveries for general readers.', url: 'https://www.scientificamerican.com/', cadence: 'Monthly' },
   { name: 'National Geographic', domain: 'nationalgeographic.com', category: 'Magazine', description: 'Exploration, science, nature, culture, and environmental storytelling.', url: 'https://www.nationalgeographic.com/', cadence: 'Monthly' },
