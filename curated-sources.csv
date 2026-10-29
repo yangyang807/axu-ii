@@ -1,0 +1,103 @@
+name,domain,category,description,url,cadence,authority_type,status
+Harvard Business Review,hbr.org,Business,"Management research, leadership, strategy and organizational practice.",https://hbr.org/,Daily,mixed,active
+MIT Sloan Management Review,sloanreview.mit.edu,Business,"Evidence-informed management, AI, digital transformation and innovation.",https://sloanreview.mit.edu/,Weekly,mixed,active
+Stanford Graduate School of Business Insights,gsb.stanford.edu,Business,"Research and practical insights on entrepreneurship, leadership and decision-making.",https://www.gsb.stanford.edu/insights,Weekly,mixed,active
+Y Combinator Library,ycombinator.com,Startups,"Startup strategy, product-market fit, growth and founder operating principles.",https://www.ycombinator.com/library,Weekly,mixed,active
+a16z,a16z.com,Technology,"Technology markets, company building and venture perspectives; treat opinions as opinions.",https://a16z.com/,Weekly,mixed,active
+Our World in Data,ourworldindata.org,Research,Accessible data and research on long-run global trends.,https://ourworldindata.org/,Weekly,mixed,active
+NBER,nber.org,Economics,Working papers and research from economists; papers may be preliminary.,https://www.nber.org/,Weekly,mixed,active
+Federal Reserve FRED,fred.stlouisfed.org,Finance,Economic time series for macroeconomic context and analysis.,https://fred.stlouisfed.org/,Weekly,mixed,active
+IMF Research,imf.org,Economics,"Global macroeconomics, financial stability and policy research.",https://www.imf.org/en/Research,Weekly,mixed,active
+World Bank Data,data.worldbank.org,Economics,Country-level development and economic indicators.,https://data.worldbank.org/,Weekly,mixed,active
+Bain Insights,bain.com,Strategy,"Strategy, customer experience, operating models and business transformation.",https://www.bain.com/insights/,Weekly,mixed,active
+McKinsey Insights,mckinsey.com,Strategy,Industry and management analysis; validate claims against primary evidence.,https://www.mckinsey.com/featured-insights,Weekly,mixed,active
+Deloitte Insights,deloitte.com,Strategy,"Industry research, technology trends and organizational change.",https://www.deloitte.com/insights,Weekly,mixed,active
+Google Scholar,scholar.google.com,Research,Discover scholarly literature and trace claims to original studies.,https://scholar.google.com/,Reference,mixed,active
+PubMed,pubmed.ncbi.nlm.nih.gov,Science,Biomedical literature index; use original studies and systematic reviews carefully.,https://pubmed.ncbi.nlm.nih.gov/,Reference,mixed,active
+arXiv,arxiv.org,AI & Science,"Preprints in AI, computer science, mathematics and other research fields.",https://arxiv.org/,Weekly,mixed,active
+Stanford HAI,hai.stanford.edu,AI & Technology,Research and policy on human-centered artificial intelligence.,https://hai.stanford.edu/,Weekly,mixed,active
+Google DeepMind Research,deepmind.google,AI & Technology,AI research announcements and technical publications.,https://deepmind.google/research/,Weekly,mixed,active
+OpenAI Research,openai.com,AI & Technology,Primary research and product announcements from OpenAI.,https://openai.com/research/,Weekly,mixed,active
+Anthropic Research,anthropic.com,AI & Technology,"Research on AI capabilities, safety and model behavior.",https://www.anthropic.com/research,Weekly,mixed,active
+NIST,nist.gov,Technology,"Standards and guidance for cybersecurity, AI and measurement.",https://www.nist.gov/,Monthly,mixed,active
+Cloudflare Learning Center,cloudflare.com,Technology,Clear technical explainers on web infrastructure and security concepts.,https://www.cloudflare.com/learning/,Reference,mixed,active
+Vercel Documentation,vercel.com,Developer Tools,"Deployment, hosting and platform documentation.",https://vercel.com/docs,Reference,mixed,active
+Supabase Documentation,supabase.com,Developer Tools,"Database, authentication, storage, policies and platform guides.",https://supabase.com/docs,Reference,mixed,active
+Next.js Documentation,nextjs.org,Developer Tools,Official documentation for Next.js app development and deployment.,https://nextjs.org/docs,Reference,mixed,active
+Stripe Resources,stripe.com,Revenue,"Payments, online business, billing and commerce guides.",https://stripe.com/resources,Weekly,mixed,active
+Reforge,reforge.com,Growth,Product growth and retention frameworks; some content requires membership.,https://www.reforge.com/blog,Weekly,mixed,active
+Lenny’s Newsletter,lennysnewsletter.com,Growth,"Product, growth and career interviews; distinguish experience from generalizable evidence.",https://www.lennysnewsletter.com/,Weekly,mixed,active
+Nielsen Norman Group,nngroup.com,Design,"UX research, usability and human-computer interaction guidance.",https://www.nngroup.com/articles/,Weekly,mixed,active
+IDEO Design Thinking,ideo.com,Creativity,Human-centered design methods and innovation practices.,https://designthinking.ideo.com/,Reference,mixed,active
+Farnam Street,fs.blog,Thinking,"Mental models and decision-making essays; use as prompts, not primary evidence.",https://fs.blog/,Weekly,mixed,active
+Behavioral Scientist,behavioralscientist.org,Psychology,Research-informed writing on behavioral science and decision-making.,https://behavioralscientist.org/,Weekly,mixed,active
+APA Monitor,apa.org,Psychology,Psychology research and professional updates.,https://www.apa.org/monitor,Monthly,mixed,active
+MIT OpenCourseWare,ocw.mit.edu,Learning,Free course materials from MIT across many disciplines.,https://ocw.mit.edu/,Reference,mixed,active
+OpenLearn,open.edu,Learning,Free learning materials across a broad range of subjects.,https://www.open.edu/openlearn/,Weekly,mixed,active
+Coursera,coursera.org,Learning,Courses and credentials from universities and industry partners; availability varies.,https://www.coursera.org/,Reference,mixed,active
+edX,edx.org,Learning,University and professional learning across multiple domains.,https://www.edx.org/,Reference,mixed,active
+Khan Academy,khanacademy.org,Learning,"Free foundational learning in math, science, economics and more.",https://www.khanacademy.org/,Reference,mixed,active
+TED Ideas,ted.com,Ideas,Talks and essays for idea discovery; verify claims independently.,https://www.ted.com/talks,Weekly,mixed,active
+The Economist,economist.com,World & Business,"Global affairs, economics and business reporting; subscription may be required.",https://www.economist.com/,Daily,mixed,active
+Reuters,reuters.com,News,International reporting; use primary documents for important decisions.,https://www.reuters.com/,Daily,mixed,active
+Financial Times,ft.com,Finance,"Business, markets and global economic reporting; subscription may be required.",https://www.ft.com/,Daily,mixed,active
+SEC EDGAR,sec.gov/edgar,Finance,Primary company filings and disclosures for U.S.-listed issuers.,https://www.sec.gov/edgar,Reference,mixed,active
+Investor.gov,investor.gov,Finance,Investor education and fraud-awareness resources from the SEC.,https://www.investor.gov/,Monthly,mixed,active
+Berkshire Hathaway Letters,berkshirehathaway.com,Investing,Shareholder letters and primary materials on long-term capital allocation.,https://www.berkshirehathaway.com/letters/letters.html,Yearly,mixed,active
+Paul Graham Essays,paulgraham.com,Startups,"Essays on startups, building, writing and founder thinking.",https://paulgraham.com/articles.html,Reference,mixed,active
+Shopify Blog,shopify.com,Commerce,"E-commerce operations, merchandising and small-business resources.",https://www.shopify.com/blog,Weekly,mixed,active
+HubSpot Research,hubspot.com,Marketing,Marketing and sales research; check sampling and survey methodology.,https://www.hubspot.com/state-of-marketing,Monthly,mixed,active
+Think with Google,thinkwithgoogle.com,Marketing,Consumer insights and marketing research from Google.,https://www.thinkwithgoogle.com/,Weekly,mixed,active
+Meta Business Help Center,facebook.com/business/help,Marketing,Official documentation for Meta advertising and business tools.,https://www.facebook.com/business/help,Reference,mixed,active
+TikTok Business Learning Center,ads.tiktok.com/business/learn,Marketing,"Platform guidance for TikTok creative, ads and campaign operations.",https://ads.tiktok.com/business/learn,Reference,mixed,active
+YouTube Creator Academy,youtube.com/creators,Content,Official creator guidance for publishing and audience development.,https://www.youtube.com/creators/,Reference,mixed,active
+YouTube Data API,developers.google.com/youtube,Developer Tools,Official API documentation for video metadata and publishing workflows.,https://developers.google.com/youtube/v3,Reference,mixed,active
+GOV.UK Business Guidance,gov.uk,Business,"Government guidance on business operations, tax and regulation in the UK.",https://www.gov.uk/browse/business,Reference,mixed,active
+OECD Data,oecd.org,Economics,"International economic, education and social policy data.",https://data.oecd.org/,Monthly,mixed,active
+UN Data,data.un.org,Research,United Nations statistical data across countries and themes.,https://data.un.org/,Monthly,mixed,active
+World Economic Forum,weforum.org,World & Business,Global industry and policy perspectives; validate reports and incentives.,https://www.weforum.org/,Weekly,mixed,active
+Nature,nature.com,Science,Scientific journal and research news; some articles require subscription.,https://www.nature.com/,Weekly,mixed,active
+Science,science.org,Science,Scientific research journal and science news.,https://www.science.org/,Weekly,mixed,active
+MIT Technology Review,technologyreview.com,Technology,Reporting and analysis on emerging technologies.,https://www.technologyreview.com/,Daily,mixed,active
+IEEE Spectrum,spectrum.ieee.org,Technology,"Engineering, computing and technology reporting.",https://spectrum.ieee.org/,Weekly,mixed,active
+ACM Communications,cacm.acm.org,Technology,Computing research and professional perspectives.,https://cacm.acm.org/,Weekly,mixed,active
+Creative Bloq,creativebloq.com,Creativity,"Design, illustration and creative tools coverage.",https://www.creativebloq.com/,Weekly,mixed,active
+The Creative Independent,thecreativeindependent.com,Creativity,Interviews and reflections on creative practice.,https://thecreativeindependent.com/,Weekly,mixed,active
+Rick Rubin / Tetragrammaton,tetragrammaton.com,Creativity,Long-form conversations with creators; use as experiential insight.,https://www.tetragrammaton.com/,Weekly,mixed,active
+Berklee Online,online.berklee.edu,Music,"Music education, theory, production and performance resources.",https://online.berklee.edu/,Reference,mixed,active
+Musictheory.net,musictheory.net,Music,Interactive foundational music theory lessons and exercises.,https://www.musictheory.net/,Reference,mixed,active
+Open Music Theory,viva.pressbooks.pub/openmusictheory,Music,Open textbook materials on music theory and analysis.,https://viva.pressbooks.pub/openmusictheory/,Reference,mixed,active
+Ableton Learning Music,learningmusic.ableton.com,Music,"Interactive music-making lessons on rhythm, melody and harmony.",https://learningmusic.ableton.com/,Reference,mixed,active
+Coursera Music Courses,coursera.org/browse/arts-and-humanities/music-and-art,Music,Music courses from universities and educators.,https://www.coursera.org/browse/arts-and-humanities/music-and-art,Reference,mixed,active
+GitHub Explore,github.com/explore,Technology,Discover open-source projects and developer communities.,https://github.com/explore,Weekly,mixed,active
+Stack Overflow,stackoverflow.com,Technology,Developer Q&A; verify accepted answers against current documentation.,https://stackoverflow.com/,Reference,mixed,active
+MDN Web Docs,developer.mozilla.org,Developer Tools,"Web platform documentation for HTML, CSS and JavaScript.",https://developer.mozilla.org/,Reference,mixed,active
+OWASP,owasp.org,Security,Open security standards and guidance for web application risks.,https://owasp.org/,Monthly,mixed,active
+CISA,cisa.gov,Security,"Cybersecurity advisories, practices and threat information.",https://www.cisa.gov/,Weekly,mixed,active
+Have I Been Pwned,haveibeenpwned.com,Security,Check whether email addresses appear in known data breaches.,https://haveibeenpwned.com/,Monthly,mixed,active
+FTC Business Guidance,ftc.gov/business-guidance,Business,Consumer protection and business compliance guidance in the U.S.,https://www.ftc.gov/business-guidance,Monthly,mixed,active
+Product Hunt,producthunt.com,Technology,Discover new products and early market signals; not proof of demand.,https://www.producthunt.com/,Daily,mixed,active
+Crunchbase News,news.crunchbase.com,Startups,"Startup, funding and venture market coverage.",https://news.crunchbase.com/,Weekly,mixed,active
+CB Insights Research,cbinsights.com,Markets,Market maps and technology industry analysis; some reports gated.,https://www.cbinsights.com/research/,Weekly,mixed,active
+Similarweb Blog,similarweb.com/blog,Growth,Digital market intelligence and traffic analysis methods.,https://www.similarweb.com/blog/,Weekly,mixed,active
+Ahrefs Blog,ahrefs.com/blog,Marketing,SEO and content marketing experiments and tutorials.,https://ahrefs.com/blog/,Weekly,mixed,active
+Google Search Central,developers.google.com/search,Marketing,Official documentation for search visibility and website quality.,https://developers.google.com/search,Reference,mixed,active
+Content Marketing Institute,contentmarketinginstitute.com,Content,"Content strategy, editorial operations and measurement.",https://contentmarketinginstitute.com/,Weekly,mixed,active
+Nieman Lab,niemanlab.org,Media,Research and reporting on the future of journalism and media.,https://www.niemanlab.org/,Daily,mixed,active
+Pew Research Center,pewresearch.org,Research,"Public opinion, demographic and media research with published methods.",https://www.pewresearch.org/,Weekly,mixed,active
+Gallup Workplace,gallup.com/workplace,Leadership,"Workplace, engagement and leadership research; inspect methods and context.",https://www.gallup.com/workplace/,Monthly,mixed,active
+MIT Learning Systems,j-wel.mit.edu,Learning,Research and resources around education and learning systems.,https://j-wel.mit.edu/,Monthly,mixed,active
+Learning Scientists,learningscientists.org,Learning,Research-informed strategies for effective learning and retention.,https://www.learningscientists.org/,Monthly,mixed,active
+Center for Creative Leadership,ccl.org,Leadership,Leadership development research and practical tools.,https://www.ccl.org/,Weekly,mixed,active
+Strategyzer,strategyzer.com,Strategy,"Business model, value proposition and experimentation tools.",https://www.strategyzer.com/,Weekly,mixed,active
+Jobs to Be Done,jtbd.info,Product Strategy,Resources and community exploring customer progress and jobs-to-be-done.,https://jtbd.info/,Reference,mixed,active
+Harvard Online,pll.harvard.edu,Learning,Courses and learning programs across many disciplines.,https://pll.harvard.edu/,Reference,mixed,active
+HBS Online,online.hbs.edu,Business,"Online business education, program formats and management topics.",https://online.hbs.edu/,Reference,mixed,active
+Kellogg Insight,insight.kellogg.northwestern.edu,Business,"Research-backed business, leadership, marketing and strategy insights.",https://insight.kellogg.northwestern.edu/,Weekly,mixed,active
+Wharton Knowledge,knowledge.wharton.upenn.edu,Business,Business research and expert perspectives from Wharton.,https://knowledge.wharton.upenn.edu/,Weekly,mixed,active
+INSEAD Knowledge,knowledge.insead.edu,Business,Global business research and management insights.,https://knowledge.insead.edu/,Weekly,mixed,active
+London Business School Think,think.london.edu,Business,"Research and commentary on business, finance and leadership.",https://www.london.edu/think,Weekly,mixed,active
+Stanford Encyclopedia of Philosophy,plato.stanford.edu,Thinking,Expert-maintained reference articles on philosophy and reasoning.,https://plato.stanford.edu/,Reference,mixed,active
+Internet Encyclopedia of Philosophy,iep.utm.edu,Thinking,Accessible academic reference on philosophy and logic.,https://iep.utm.edu/,Reference,mixed,active
+LessWrong,lesswrong.com,Thinking,Community essays on rationality and decision-making; quality varies by post.,https://www.lesswrong.com/,Weekly,mixed,active
+The Marginalian,themarginalian.org,Ideas,"Essays connecting literature, art, science and meaning.",https://www.themarginalian.org/,Weekly,mixed,active
