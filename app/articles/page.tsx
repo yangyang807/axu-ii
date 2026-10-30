@@ -78,7 +78,6 @@ export default function BusinessAIBookKitPage() {
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }} className="py-6 px-4 sm:py-10 sm:px-8">
         
-        {/* HEADER SECTION */}
         <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '20px', marginBottom: '28px' }}>
           <div style={{ fontSize: '11px', color: '#b8860b', letterSpacing: '1.5px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
             ADMIN PUBLISHED KNOWLEDGE ASSETS
@@ -87,11 +86,10 @@ export default function BusinessAIBookKitPage() {
             Business & AI Book Kit
           </h1>
           <p style={{ color: '#555555', fontSize: '14px', marginTop: '8px', lineHeight: '1.5' }}>
-            Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
+            Official books, research blueprints, and execution guides published via the Admin Console.
           </p>
         </div>
 
-        {/* SEARCH & FILTERS BAR */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div style={{ position: 'relative', width: '100%', maxWidth: '340px' }}>
             <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
@@ -136,7 +134,6 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* BOOK LIST */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: '#777777', fontSize: '14px' }}>Loading published books...</div>
         ) : filteredBooks.length === 0 ? (
@@ -150,7 +147,6 @@ export default function BusinessAIBookKitPage() {
                 key={book.id}
                 className="bg-white border border-gray-200 md:border-0 md:border-b md:border-gray-200 rounded-xl md:rounded-none overflow-hidden p-4 md:p-0 md:pb-6 shadow-sm md:shadow-none grid grid-cols-1 md:grid-cols-[1fr_180px] gap-4 md:gap-6 items-start"
               >
-                {/* Content Details (Order first on mobile so text comes before or with balanced height image) */}
                 <div className="flex flex-col justify-between h-full order-last md:order-first">
                   <div>
                     <div className="flex items-center gap-2 mb-1.5">
@@ -175,7 +171,6 @@ export default function BusinessAIBookKitPage() {
                     </p>
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex items-center gap-2 pt-2 border-t border-gray-100 md:border-0">
                     <button style={{
                       background: '#171a18',
@@ -220,15 +215,11 @@ export default function BusinessAIBookKitPage() {
                   </div>
                 </div>
 
-                {/* Book Cover Image (Fixed proper mobile height h-40 instead of overly tall h-56/h-64) */}
                 <div className="w-full h-40 sm:h-48 md:h-[130px] overflow-hidden rounded-md bg-gray-100 order-first md:order-last">
                   <img 
                     src={book.coverUrl} 
                     alt={book.title} 
                     className="w-full h-full object-cover block"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
                   />
                 </div>
 

@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
-import { ArrowLeft, Share2, Bookmark, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Share2, Bookmark } from 'lucide-react';
 
 interface Article {
   id: string;
@@ -100,15 +100,13 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
 
-      {/* Main Reading Container (Optimized width for maximum reading comfort) */}
+      {/* Main Reading Container */}
       <main className="w-full max-w-[680px] mx-auto px-5 sm:px-6 pt-6 sm:pt-10">
         
-        {/* Category Label */}
         <div className="text-xs font-sans font-bold text-[#b8860b] uppercase tracking-wider mb-3">
           {magazine.category || 'MAGAZINE'}
         </div>
 
-        {/* Article Title */}
         <h1 
           className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#111111] mb-4"
           style={{ lineHeight: '1.18', fontFamily: 'Georgia, serif' }}
@@ -116,14 +114,12 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
           {magazine.title}
         </h1>
 
-        {/* Excerpt / Subtitle */}
         {magazine.excerpt && (
           <p className="text-lg sm:text-xl text-gray-600 font-normal mb-6 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
             {magazine.excerpt}
           </p>
         )}
 
-        {/* Author Byline */}
         <div className="text-xs sm:text-sm font-sans font-medium text-gray-800 mb-6 pb-6 border-b border-gray-200 flex items-center justify-between">
           <div>
             By <span className="font-bold underline decoration-1 underline-offset-4">AXU-II Editorial Staff</span>
@@ -133,7 +129,6 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
 
-        {/* Cover Image */}
         {coverImage && (
           <div className="mb-8 -mx-5 sm:mx-0">
             <div className="w-full h-64 sm:h-80 md:h-[400px] overflow-hidden bg-gray-100 sm:rounded-md">
@@ -141,15 +136,11 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
                 src={coverImage} 
                 alt={magazine.title} 
                 className="w-full h-full object-cover" 
-                onError={(e) => {
-                  e.currentTarget.parentElement?.remove();
-                }}
               />
             </div>
           </div>
         )}
 
-        {/* Article Body Content (Professional Typography & Line Height) */}
         <div 
           className="text-lg sm:text-xl text-[#1a1a1a] leading-[1.85] font-normal space-y-6"
           style={{ fontFamily: 'Georgia, serif', overflowWrap: 'break-word', wordBreak: 'break-word' }}
@@ -157,7 +148,6 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
           {magazine.body_md || magazine.excerpt}
         </div>
 
-        {/* Bottom Social & Action Bar */}
         <div className="flex items-center justify-between py-4 my-10 border-y border-gray-200 text-xs font-sans text-gray-700">
           <div className="font-bold uppercase tracking-wider">
             Share this article
@@ -172,7 +162,6 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
 
-        {/* Bottom Back Button & Footer Note */}
         <div className="pt-4 font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="text-sm font-bold text-gray-900">AXU-II Editorial Staff</div>
