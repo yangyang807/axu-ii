@@ -62,7 +62,7 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', overflowX: 'hidden', width: '100%' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', width: '100%' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
@@ -78,9 +78,9 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', color: '#222222', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }} className="pb-20">
+    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', color: '#222222', width: '100%', boxSizing: 'border-box' }} className="pb-20">
       
-      {/* Main Article Container - ဘေးဘောင် လုံလောက်သော နေရာလွတ်ရရှိရန် px-4 sm:px-6 ကို သုံးထားသည် */}
+      {/* Main Article Container */}
       <main style={{ maxWidth: '800px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-4 sm:px-8 pt-6 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
@@ -128,16 +128,15 @@ export default function MagazineDetailPage() {
           </div>
         </div>
 
-        {/* --- ARTICLE CONTENT CARD WRAPPER (စာသားနှင့် အချက်အလက်များ ဘေးဘောင်နှင့် မကပ်စေရန် သီးသန့်ဘောင်ခံထားခြင်း) --- */}
+        {/* --- ARTICLE CONTENT CARD WRAPPER --- */}
         <div style={{ 
           backgroundColor: '#ffffff', 
           border: '1px solid #eaeaea', 
           borderRadius: '12px', 
-          padding: '24px sm:px-10 py-6 sm:py-10', 
           boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
           boxSizing: 'border-box',
           width: '100%'
-        }} className="px-5 sm:px-10">
+        }} className="p-5 sm:p-10">
 
           {/* Author Profile Info Header */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px', boxSizing: 'border-box', width: '100%' }}>
