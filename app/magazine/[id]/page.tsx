@@ -62,7 +62,7 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', overflowX: 'hidden' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', overflowX: 'hidden', width: '100%' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
@@ -78,13 +78,13 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }} className="pb-20">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }} className="pb-20">
       
-      {/* Main Article Container - ဘေးဘောင် padding ကို ဖုန်းစခရင်မ်အတွက် ပိုမိုပေးထားပါသည် (px-6 sm:px-10) */}
-      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-6 sm:px-10 pt-6 sm:pt-10">
+      {/* Main Article Container - မိုဘိုင်းအတွက် ဘေးဘောင်ကပ်ခြင်းကို အကြွင်းမဲ့ကာကွယ်ရန် px-5 sm:px-8 ကို သုံးထားပါသည် */}
+      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-5 sm:px-8 pt-6 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6" style={{ boxSizing: 'border-box' }}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6" style={{ boxSizing: 'border-box', width: '100%' }}>
           
           {/* Back Button & Date */}
           <div className="flex items-center gap-4 flex-wrap">
@@ -129,7 +129,7 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Author Profile Info Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px', boxSizing: 'border-box' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px', boxSizing: 'border-box', width: '100%' }}>
           <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
             AX
           </div>
@@ -140,21 +140,22 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Category Label */}
-        <div style={{ fontSize: '12px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
+        <div style={{ fontSize: '12px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', boxSizing: 'border-box' }}>
           {magazine.category || 'MAGAZINE'}
         </div>
 
         {/* Title */}
         <h1 
           style={{ 
-            fontSize: 'clamp(22px, 5vw, 34px)', 
+            fontSize: 'clamp(20px, 4.5vw, 32px)', 
             color: '#111111', 
             lineHeight: '1.3', 
             margin: '0 0 20px 0', 
             fontWeight: 800,
             overflowWrap: 'break-word',
             wordBreak: 'break-word',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            width: '100%'
           }}
         >
           {magazine.title}
@@ -192,7 +193,7 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px', marginBottom: '40px', boxSizing: 'border-box' }}>
+        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px', marginBottom: '40px', boxSizing: 'border-box', width: '100%' }}>
           <button 
             onClick={() => router.push('/magazine')}
             style={{
