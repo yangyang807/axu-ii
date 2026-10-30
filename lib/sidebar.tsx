@@ -36,25 +36,36 @@ export function Sidebar() {
         top: 0,
         zIndex: 50,
         width: '100%',
-        padding: '12px 24px',
+        padding: '12px 16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '20px'
+        gap: '16px'
       }}
     >
       {/* Brand Section */}
-      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
         <div className="brand-mark">A</div>
         <div>
-          <div className="brand-name">AXU-II</div>
-          <div className="brand-sub">KNOWLEDGE OS</div>
+          <div className="brand-name" style={{ fontSize: '14px', fontWeight: 'bold' }}>AXU-II</div>
+          <div className="brand-sub" style={{ fontSize: '10px' }}>KNOWLEDGE OS</div>
         </div>
       </Link>
 
-      {/* Horizontal Navigation Menu */}
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+      {/* Horizontal Navigation Menu (Mobile တွင် ဘေးတိုက် scroll ဆွဲ၍ ကြည့်နိုင်ရန် ပြုလုပ်ထားသည်) */}
+      <nav 
+        style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '6px', 
+          overflowX: 'auto', 
+          whiteSpace: 'nowrap',
+          scrollbarWidth: 'none', // Firefox အတွက် scrollbar ဖျောက်ရန်
+          msOverflowStyle: 'none',  // IE/Edge အတွက်
+          paddingBottom: '4px'
+        }}
+        className="no-scrollbar"
+      >
         {groups.map((g) =>
           g.items.map((item) => {
             const I = item.icon;
@@ -67,18 +78,17 @@ export function Sidebar() {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  padding: '8px 14px',
+                  gap: '6px',
+                  padding: '6px 10px',
                   borderRadius: '4px',
-                  fontSize: '13px',
+                  fontSize: '12px',
                   color: isActive ? '#ffffff' : '#c7c8c0',
                   background: isActive ? '#2c302c' : 'transparent',
                   borderBottom: isActive ? '2px solid #c4a66a' : '2px solid transparent',
-                  margin: 0,
-                  whiteSpace: 'nowrap'
+                  flexShrink: 0
                 }}
               >
-                <I size={15} strokeWidth={1.7} />
+                <I size={14} strokeWidth={1.7} />
                 <span>{item.label}</span>
               </Link>
             );
@@ -86,8 +96,11 @@ export function Sidebar() {
         )}
       </nav>
 
-      {/* Right side Tag */}
-      <div style={{ fontSize: '11px', color: '#c9b17b', fontWeight: 600, letterSpacing: '1px' }}>
+      {/* Right side Tag (Desktop တွင်သာ ပေါ်စေရန်) */}
+      <div 
+        className="hidden lg:block" 
+        style={{ fontSize: '11px', color: '#c9b17b', fontWeight: 600, letterSpacing: '1px', flexShrink: 0 }}
+      >
         BUILD WITH EVIDENCE
       </div>
     </header>
