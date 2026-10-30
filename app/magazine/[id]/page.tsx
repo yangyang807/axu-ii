@@ -62,7 +62,7 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', width: '100%' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 24px', fontFamily: 'sans-serif', boxSizing: 'border-box', width: '100%' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
@@ -78,13 +78,13 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', color: '#222222', width: '100%', boxSizing: 'border-box' }} className="pb-20">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', fontFamily: 'sans-serif' }}>
       
-      {/* Main Article Container */}
-      <main style={{ maxWidth: '800px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-4 sm:px-8 pt-6 sm:pt-10">
+      {/* 1000px Container နမူနာယူထားသော Main Wrapper */}
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px 24px', boxSizing: 'border-box', width: '100%' }}>
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6" style={{ boxSizing: 'border-box', width: '100%' }}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '24px', marginBottom: '32px' }}>
           
           {/* Back Button & Date */}
           <div className="flex items-center gap-4 flex-wrap">
@@ -128,90 +128,76 @@ export default function MagazineDetailPage() {
           </div>
         </div>
 
-        {/* --- ARTICLE CONTENT CARD WRAPPER --- */}
-        <div style={{ 
-          backgroundColor: '#ffffff', 
-          border: '1px solid #eaeaea', 
-          borderRadius: '12px', 
-          boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-          boxSizing: 'border-box',
-          width: '100%'
-        }} className="p-5 sm:p-10">
-
-          {/* Author Profile Info Header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px', boxSizing: 'border-box', width: '100%' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
-              AX
-            </div>
-            <div style={{ minWidth: 0, overflow: 'hidden' }}>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: '#111', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>AXU-II Editorial Staff</div>
-              <div style={{ fontSize: '12px', color: '#666', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>Global Research & Publication</div>
-            </div>
+        {/* Author Profile Info Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+          <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
+            AX
           </div>
-
-          {/* Category Label */}
-          <div style={{ fontSize: '12px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px', boxSizing: 'border-box' }}>
-            {magazine.category || 'MAGAZINE'}
+          <div style={{ minWidth: 0, overflow: 'hidden' }}>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>AXU-II Editorial Staff</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>Global Research & Publication</div>
           </div>
+        </div>
 
-          {/* Title */}
-          <h1 
-            style={{ 
-              fontSize: 'clamp(20px, 4.5vw, 32px)', 
-              color: '#111111', 
-              lineHeight: '1.3', 
-              margin: '0 0 20px 0', 
-              fontWeight: 800,
-              overflowWrap: 'break-word',
-              wordBreak: 'break-word',
-              boxSizing: 'border-box',
-              width: '100%'
-            }}
-          >
-            {magazine.title}
-          </h1>
+        {/* Category Label */}
+        <div style={{ fontSize: '12px', color: '#b8860b', letterSpacing: '2px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '12px' }}>
+          {magazine.category || 'MAGAZINE'}
+        </div>
 
-          {/* Cover Image */}
-          {coverImage && (
-            <div className="w-full h-56 sm:h-72 md:h-80 overflow-hidden rounded-lg mb-6 bg-gray-100" style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
-              <img 
-                src={coverImage} 
-                alt={magazine.title} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
-                onError={(e) => {
-                  e.currentTarget.parentElement?.remove();
-                }}
-              />
-            </div>
-          )}
+        {/* Title */}
+        <h1 
+          style={{ 
+            fontSize: 'clamp(24px, 4vw, 36px)', 
+            fontFamily: 'serif', 
+            color: '#111111', 
+            lineHeight: '1.25', 
+            margin: '0 0 24px 0', 
+            fontWeight: 700,
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word'
+          }}
+        >
+          {magazine.title}
+        </h1>
 
-          {/* Article Body Content */}
-          <div 
-            style={{ 
-              fontSize: '16px', 
-              lineHeight: '1.8', 
-              color: '#222222', 
-              whiteSpace: 'pre-wrap',
-              fontWeight: 400,
-              overflowWrap: 'break-word',
-              wordBreak: 'break-word',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}
-          >
-            {magazine.body_md || magazine.excerpt}
+        {/* Cover Image */}
+        {coverImage && (
+          <div className="w-full h-64 sm:h-80 md:h-96 overflow-hidden rounded-lg mb-8 bg-gray-100">
+            <img 
+              src={coverImage} 
+              alt={magazine.title} 
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+              onError={(e) => {
+                e.currentTarget.parentElement?.remove();
+              }}
+            />
           </div>
+        )}
 
+        {/* Article Body Content */}
+        <div 
+          style={{ 
+            fontSize: '16px', 
+            lineHeight: '1.8', 
+            color: '#333333', 
+            whiteSpace: 'pre-wrap',
+            fontWeight: 400,
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word',
+            width: '100%'
+          }}
+        >
+          {magazine.body_md || magazine.excerpt}
         </div>
 
         {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px', marginBottom: '40px', boxSizing: 'border-box', width: '100%' }}>
+        <div style={{ borderTop: '1px solid #e0e0e0', marginTop: '48px', paddingTop: '24px' }}>
           <button 
             onClick={() => router.push('/magazine')}
             style={{
               backgroundColor: '#f1f3f5',
               border: 'none',
-              padding: '10px 16px',
+              padding: '10px 18px',
               borderRadius: '6px',
               color: '#333',
               fontSize: '13px',
@@ -219,11 +205,11 @@ export default function MagazineDetailPage() {
               cursor: 'pointer'
             }}
           >
-            ← Back to All Articles
+            ← Back to Daily Magazine
           </button>
         </div>
 
-      </main>
+      </div>
     </div>
   );
 }
