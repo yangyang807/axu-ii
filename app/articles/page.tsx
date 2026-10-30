@@ -7,8 +7,7 @@ import {
   Search, 
   Download, 
   User, 
-  Clock, 
-  Sparkles
+  Clock 
 } from 'lucide-react';
 
 interface BookItem {
@@ -21,7 +20,7 @@ interface BookItem {
   readTime: string;
   publishedDate: string;
   summary: string;
-  downloadUrl?: string; // PDF လင့်ခ်အတွက် ထည့်သွင်းထားသည်
+  downloadUrl?: string;
 }
 
 export default function BusinessAIBookKitPage() {
@@ -38,7 +37,6 @@ export default function BusinessAIBookKitPage() {
 
   async function fetchBooks() {
     try {
-      // Supabase articles table မှ category 'book' ဖြစ်သော အချက်အလက်များကို ဆွဲထုတ်ခြင်း
       const { data, error } = await supabase
         .from('articles')
         .select('*')
@@ -54,12 +52,10 @@ export default function BusinessAIBookKitPage() {
           subtitle: item.excerpt || 'Business & AI Execution Guide',
           author: 'Yang Karg',
           category: 'Business Strategy',
-          // ပထမပုံ (Cover Image) အတွက် source_urls ၏ ပထမတန်ဖိုးကို ယူသည်
           coverUrl: item.source_urls && item.source_urls[0] ? item.source_urls[0] : 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop',
           readTime: '30 mins read',
           publishedDate: new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
           summary: item.excerpt || 'No summary provided.',
-          // PDF လင့်ခ်အတွက် Database ထဲရှိ နေရာ (ဥပမာ- pdf_url, file_url သို့မဟုတ် source_urls[1]) ကို ချိတ်ဆက်ပေးခြင်း
           downloadUrl: item.pdf_url || item.file_url || (item.source_urls && item.source_urls[1] ? item.source_urls[1] : undefined)
         }));
         setBooks(formattedBooks);
@@ -81,7 +77,7 @@ export default function BusinessAIBookKitPage() {
   });
 
   return (
-    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', padding: '32px 40px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }} className="py-6 px-4 sm:py-8 sm:px-6 lg:px-10">
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         
         {/* Top Header Tag */}
@@ -90,7 +86,7 @@ export default function BusinessAIBookKitPage() {
         </div>
 
         {/* Title */}
-        <h1 style={{ fontSize: '32px', fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
+        <h1 className="text-2xl sm:text-3xl" style={{ fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
           Business & AI Book Kit
         </h1>
 
@@ -99,17 +95,10 @@ export default function BusinessAIBookKitPage() {
           Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
         </p>
 
-        {/* Search and Filters Bar */}
-        <div style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          gap: '16px', 
-          marginBottom: '32px'
-        }}>
+        {/* Search and Filters Bar (Mobile တွင် အောက်ချင်းဆင်းရန် Flex-col သုံးထားသည်) */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           {/* Search Bar */}
-          <div style={{ position: 'relative', width: '380px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
             <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
             <input
               type="text"
@@ -130,8 +119,8 @@ export default function BusinessAIBookKitPage() {
             />
           </div>
 
-          {/* Filters Buttons */}
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {/* Filters Buttons (Mobile တွင် ဘေးတိုက် scroll ဆွဲ၍ရရန် overflow-x-auto သုံးထားသည်) */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar" style={{ whiteSpace: 'nowrap' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -145,7 +134,8 @@ export default function BusinessAIBookKitPage() {
                   border: selectedCategory === cat ? '1px solid #111111' : '1px solid #e5e7eb',
                   background: selectedCategory === cat ? '#171a18' : '#ffffff',
                   color: selectedCategory === cat ? '#ffffff' : '#4b5563',
-                  transition: 'all 0.15s ease'
+                  transition: 'all 0.15s ease',
+                  flexShrink: 0
                 }}
               >
                 {cat}
@@ -162,23 +152,15 @@ export default function BusinessAIBookKitPage() {
             No books found. Publish a book from the Admin Console using the <strong>Business & AI Book Kit</strong> category.
           </div>
         ) : (
-          /* Books Grid View */
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(580px, 1fr))', gap: '24px' }}>
+          /* Books Grid View (Mobile တွင် 1 column၊ Tablet/Desktop တွင် responsive လိုက်၍ ကော်လံများပြောင်းမည်) */
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                style={{ 
-                  background: '#ffffff', 
-                  border: '1px solid #e5e7eb', 
-                  borderRadius: '8px', 
-                  overflow: 'hidden',
-                  display: 'flex',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-                }}
+                className="flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-200"
               >
-                {/* Left Column: Book Cover Image */}
-                <div style={{ width: '190px', minWidth: '190px', position: 'relative', background: '#171a18' }}>
+                {/* Book Cover Image (Mobile တွင် အထက်၊ Desktop တွင် ဘယ်ဘက်တွင်ပြမည်) */}
+                <div className="w-full sm:w-[180px] sm:min-w-[180px] h-52 sm:h-auto relative bg-[#171a18]">
                   <img 
                     src={book.coverUrl} 
                     alt={book.title}
@@ -186,8 +168,8 @@ export default function BusinessAIBookKitPage() {
                   />
                 </div>
 
-                {/* Right Column: Book Details */}
-                <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+                {/* Book Details */}
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
                   <div>
                     {/* Category & Meta */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
@@ -238,7 +220,7 @@ export default function BusinessAIBookKitPage() {
                       <BookOpen size={13} /> Read Chapter
                     </button>
 
-                    {/* PDF Download Button with Link Check */}
+                    {/* PDF Download Button */}
                     <button 
                       onClick={() => {
                         if (book.downloadUrl) {

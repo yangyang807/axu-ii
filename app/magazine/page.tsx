@@ -78,14 +78,7 @@ export default function MagazineListPage() {
               return (
                 <article 
                   key={item.id}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: imageUrl ? '1fr 240px' : '1fr',
-                    gap: '24px',
-                    paddingBottom: '32px',
-                    borderBottom: '1px solid #e0e0e0',
-                    alignItems: 'start'
-                  }}
+                  className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-6 pb-8 border-b border-gray-200 items-start"
                 >
                   <div>
                     <div style={{ fontSize: '12px', color: '#b8860b', fontWeight: 700, marginBottom: '8px' }}>
@@ -119,7 +112,7 @@ export default function MagazineListPage() {
                   </div>
 
                   {imageUrl && (
-                    <div style={{ width: '100%', height: '160px', overflow: 'hidden', borderRadius: '6px', background: '#f0f0f0' }}>
+                    <div className="w-full h-48 md:h-[160px] overflow-hidden rounded-md bg-gray-100 order-first md:order-last">
                       <img 
                         src={imageUrl} 
                         alt={item.title} 
