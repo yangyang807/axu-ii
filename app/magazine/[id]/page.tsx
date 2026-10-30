@@ -82,13 +82,13 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
     month: 'long', 
     day: 'numeric', 
     year: 'numeric' 
-  }).toUpperCase() + ' • ' + new Date(magazine.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toUpperCase() + ' ET';
+  }).toUpperCase();
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', fontFamily: 'Georgia, serif' }} className="pb-24 overflow-x-hidden selection:bg-black selection:text-white">
       
-      {/* Top Navigation Bar */}
-      <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between max-w-[740px] mx-auto">
+      {/* Sticky Minimal Navigation Header */}
+      <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between max-w-[740px] mx-auto">
         <button 
           onClick={() => router.push('/magazine')}
           className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-wider text-gray-700 hover:text-black transition-colors"
@@ -100,13 +100,18 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
 
-      {/* Main Article Container (The Atlantic / Professional Reading Width) */}
+      {/* Main Reading Container (Optimized width for maximum reading comfort) */}
       <main className="w-full max-w-[680px] mx-auto px-5 sm:px-6 pt-6 sm:pt-10">
         
-        {/* Title */}
+        {/* Category Label */}
+        <div className="text-xs font-sans font-bold text-[#b8860b] uppercase tracking-wider mb-3">
+          {magazine.category || 'MAGAZINE'}
+        </div>
+
+        {/* Article Title */}
         <h1 
           className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#111111] mb-4"
-          style={{ lineHeight: '1.15', fontFamily: 'Georgia, serif' }}
+          style={{ lineHeight: '1.18', fontFamily: 'Georgia, serif' }}
         >
           {magazine.title}
         </h1>
@@ -119,14 +124,19 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
         )}
 
         {/* Author Byline */}
-        <div className="text-xs sm:text-sm font-sans font-medium text-gray-800 mb-6 pb-6 border-b border-gray-200">
-          By <span className="font-bold underline decoration-1 underline-offset-4">AXU-II Editorial Staff</span>
+        <div className="text-xs sm:text-sm font-sans font-medium text-gray-800 mb-6 pb-6 border-b border-gray-200 flex items-center justify-between">
+          <div>
+            By <span className="font-bold underline decoration-1 underline-offset-4">AXU-II Editorial Staff</span>
+          </div>
+          <div className="text-gray-500 font-normal">
+            {formattedDate}
+          </div>
         </div>
 
         {/* Cover Image */}
         {coverImage && (
           <div className="mb-8 -mx-5 sm:mx-0">
-            <div className="w-full h-64 sm:h-80 md:h-[420px] overflow-hidden bg-gray-100 sm:rounded-md">
+            <div className="w-full h-64 sm:h-80 md:h-[400px] overflow-hidden bg-gray-100 sm:rounded-md">
               <img 
                 src={coverImage} 
                 alt={magazine.title} 
@@ -136,23 +146,25 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
                 }}
               />
             </div>
-            <div className="text-[11px] font-sans text-gray-500 mt-2 px-5 sm:px-0">
-              Photo: AXU-II Global Research & Publication Archive
-            </div>
           </div>
         )}
 
-        {/* Date and Social Interaction Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-3 border-y border-gray-200 mb-8 text-xs font-sans text-gray-600">
-          <div className="tracking-wider uppercase font-medium">
-            {formattedDate}
+        {/* Article Body Content (Professional Typography & Line Height) */}
+        <div 
+          className="text-lg sm:text-xl text-[#1a1a1a] leading-[1.85] font-normal space-y-6"
+          style={{ fontFamily: 'Georgia, serif', overflowWrap: 'break-word', wordBreak: 'break-word' }}
+        >
+          {magazine.body_md || magazine.excerpt}
+        </div>
+
+        {/* Bottom Social & Action Bar */}
+        <div className="flex items-center justify-between py-4 my-10 border-y border-gray-200 text-xs font-sans text-gray-700">
+          <div className="font-bold uppercase tracking-wider">
+            Share this article
           </div>
           <div className="flex items-center gap-6">
             <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
               <Share2 size={14} /> SHARE
-            </button>
-            <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
-              <MessageSquare size={14} /> DISCUSS
             </button>
             <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
               <Bookmark size={14} /> SAVE
@@ -160,25 +172,17 @@ export default function MagazineDetailPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
 
-        {/* Article Body Content (Professional Editorial Typography) */}
-        <div 
-          className="text-lg sm:text-xl text-[#1a1a1a] leading-[1.8] font-normal space-y-6"
-          style={{ fontFamily: 'Georgia, serif', overflowWrap: 'break-word', wordBreak: 'break-word' }}
-        >
-          {magazine.body_md || magazine.excerpt}
-        </div>
-
-        {/* Bottom Author / Publication Signoff */}
-        <div className="mt-16 pt-8 border-t border-gray-200 font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Bottom Back Button & Footer Note */}
+        <div className="pt-4 font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="text-sm font-bold text-gray-900">AXU-II Editorial Staff</div>
-            <div className="text-xs text-gray-500 mt-0.5">Global Research, Business Blueprints & AI Execution Guides.</div>
+            <div className="text-xs text-gray-500 mt-0.5">Global Research & Publication Archive.</div>
           </div>
           <button 
             onClick={() => router.push('/magazine')}
             className="text-xs font-bold uppercase tracking-wider bg-black text-white px-4 py-2.5 rounded hover:bg-gray-800 transition-colors"
           >
-            ← All Articles
+            ← Back to All Articles
           </button>
         </div>
 

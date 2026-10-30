@@ -5,8 +5,7 @@ import { createClient } from '@/lib/supabase';
 import { 
   BookOpen, 
   Search, 
-  Download,
-  Clock
+  Download 
 } from 'lucide-react';
 
 interface BookItem {
@@ -137,7 +136,7 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* BOOK LIST (Mobile: Responsive Card View, Desktop: Clean Horizontal Layout) */}
+        {/* BOOK LIST */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: '#777777', fontSize: '14px' }}>Loading published books...</div>
         ) : filteredBooks.length === 0 ? (
@@ -145,28 +144,16 @@ export default function BusinessAIBookKitPage() {
             No books found.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+          <div className="flex flex-col gap-6">
             {filteredBooks.map((book) => (
               <article 
                 key={book.id}
-                className="bg-white border border-gray-200 md:border-0 md:border-b md:border-gray-200 rounded-xl md:rounded-none overflow-hidden p-0 md:pb-6 shadow-sm md:shadow-none flex flex-col md:grid md:grid-cols-[1fr_200px] gap-4 md:gap-6 items-start"
+                className="bg-white border border-gray-200 md:border-0 md:border-b md:border-gray-200 rounded-xl md:rounded-none overflow-hidden p-4 md:p-0 md:pb-6 shadow-sm md:shadow-none grid grid-cols-1 md:grid-cols-[1fr_180px] gap-4 md:gap-6 items-start"
               >
-                {/* Book Cover Image */}
-                <div className="w-full h-48 sm:h-56 md:h-[150px] overflow-hidden bg-gray-100 order-first md:order-last">
-                  <img 
-                    src={book.coverUrl} 
-                    alt={book.title} 
-                    className="w-full h-full object-cover block"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
-
-                {/* Content Details */}
-                <div className="p-4 md:p-0 flex flex-col justify-between h-full">
+                {/* Content Details (Order first on mobile so text comes before or with balanced height image) */}
+                <div className="flex flex-col justify-between h-full order-last md:order-first">
                   <div>
-                    <div className="flex items-center justify-between md:justify-start gap-2 mb-1.5">
+                    <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-[11px] font-bold text-[#b8860b] uppercase tracking-wider">
                         {book.category}
                       </span>
@@ -175,7 +162,7 @@ export default function BusinessAIBookKitPage() {
                       </span>
                     </div>
 
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-serif text-[#111111] font-semibold leading-snug mb-1">
+                    <h2 className="text-lg sm:text-xl font-serif text-[#111111] font-semibold leading-snug mb-1">
                       {book.title}
                     </h2>
 
@@ -231,6 +218,18 @@ export default function BusinessAIBookKitPage() {
                       <Download size={13} /> PDF
                     </button>
                   </div>
+                </div>
+
+                {/* Book Cover Image (Fixed proper mobile height h-40 instead of overly tall h-56/h-64) */}
+                <div className="w-full h-40 sm:h-48 md:h-[130px] overflow-hidden rounded-md bg-gray-100 order-first md:order-last">
+                  <img 
+                    src={book.coverUrl} 
+                    alt={book.title} 
+                    className="w-full h-full object-cover block"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
                 </div>
 
               </article>
