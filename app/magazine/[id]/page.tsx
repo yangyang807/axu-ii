@@ -48,13 +48,14 @@ export default function MagazineDetailPage() {
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
       return urlOrPath;
     }
-    const { data } = supabase.storage.from('magazine-images').getPublicUrl(urlOrPath);
-    return data.publicUrl;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://tnlkispfkhdupnlcgsqu.supabase.co';
+    const cleanPath = urlOrPath.replace(/^\/+/, '');
+    return `${supabaseUrl}/storage/v1/object/public/magazine-images/${cleanPath}`;
   };
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#666', fontSize: '15px' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#777777', fontSize: '15px', fontFamily: 'sans-serif' }}>
         Loading article...
       </div>
     );
@@ -62,11 +63,11 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 24px' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', textAlign: 'center', padding: '120px 24px', fontFamily: 'sans-serif' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
-          style={{ color: '#0066cc', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}
+          style={{ color: '#b8860b', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}
         >
           ← Back to Daily Magazine
         </button>
@@ -78,13 +79,13 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', overflowX: 'hidden' }} className="pb-20">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', fontFamily: 'sans-serif' }} className="pb-20 overflow-x-hidden">
       
       {/* Main Article Container */}
-      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%' }} className="px-4 sm:px-6 pt-6 sm:pt-10">
+      <main style={{ maxWidth: '800px', margin: '0 auto' }} className="px-5 sm:px-8 pt-8 sm:pt-12">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 mb-8">
           
           {/* Back Button & Date */}
           <div className="flex items-center gap-4 flex-wrap">
@@ -96,7 +97,7 @@ export default function MagazineDetailPage() {
                 gap: '6px',
                 background: 'none',
                 border: 'none',
-                color: '#555',
+                color: '#555555',
                 fontSize: '14px',
                 cursor: 'pointer',
                 fontWeight: 600,
@@ -106,7 +107,7 @@ export default function MagazineDetailPage() {
               <ArrowLeft size={16} /> Back
             </button>
 
-            <div style={{ color: '#666', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{ color: '#666666', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Calendar size={14} /> {new Date(magazine.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </div>
           </div>
@@ -114,44 +115,45 @@ export default function MagazineDetailPage() {
           {/* Social Share Icons */}
           <div style={{ display: 'flex', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#3b5998', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Facebook size={15} />
+              <Facebook size={14} />
             </div>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#000000', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Twitter size={15} />
+              <Twitter size={14} />
             </div>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#0077b5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Linkedin size={15} />
+              <Linkedin size={14} />
             </div>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#555555', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Mail size={15} />
+              <Mail size={14} />
             </div>
           </div>
         </div>
 
         {/* Author Profile Info Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+          <div style={{ width: '44px', height: '44px', borderRadius: '50%', backgroundColor: '#171a18', color: '#c9b17b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '15px', flexShrink: 0 }}>
             AX
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>AXU-II Editorial Staff</div>
-            <div style={{ fontSize: '12px', color: '#666' }}>Global Research & Publication</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#111111' }}>AXU-II Editorial Staff</div>
+            <div style={{ fontSize: '12px', color: '#666666' }}>Global Research & Publication</div>
           </div>
         </div>
 
         {/* Category Label */}
-        <div style={{ fontSize: '12px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
+        <div style={{ fontSize: '12px', color: '#b8860b', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px' }}>
           {magazine.category || 'MAGAZINE'}
         </div>
 
-        {/* Title (ဖုန်းစခരീန်းတွင် အလွန်ကြီးမားမနေဘဲ သင့်တင့်သော အရွယ်အစားနှင့် word-break သုံးထားသည်) */}
+        {/* Title (Mobile တွင် ကျဉ်းမြောင်းလွန်းခြင်းမရှိဘဲ ဖတ်ရလွယ်ကူစေရန် text-2xl သို့မဟုတ် sm:text-3xl ကို သုံးထားသည်) */}
         <h1 
+          className="text-2xl sm:text-3xl md:text-4xl"
           style={{ 
-            fontSize: 'clamp(22px, 5vw, 36px)', 
             color: '#111111', 
             lineHeight: '1.3', 
-            margin: '0 0 20px 0', 
-            fontWeight: 800,
+            margin: '0 0 24px 0', 
+            fontWeight: 700,
+            fontFamily: 'serif',
             overflowWrap: 'break-word',
             wordBreak: 'break-word'
           }}
@@ -161,7 +163,7 @@ export default function MagazineDetailPage() {
 
         {/* Cover Image */}
         {coverImage && (
-          <div className="w-full h-56 sm:h-72 md:h-80 overflow-hidden rounded-lg mb-6 bg-gray-100">
+          <div className="w-full h-56 sm:h-72 md:h-96 overflow-hidden rounded-lg mb-8 bg-gray-100">
             <img 
               src={coverImage} 
               alt={magazine.title} 
@@ -173,11 +175,11 @@ export default function MagazineDetailPage() {
           </div>
         )}
 
-        {/* Article Body Content */}
+        {/* Article Body Content (စာသားများ အချင်းချင်း မကပ်နေစေရန် line-height နှင့် padding များကို သပ်ရပ်စွာ ချိန်ညှိထားသည်) */}
         <div 
+          className="text-base sm:text-lg"
           style={{ 
-            fontSize: '16px', 
-            lineHeight: '1.8', 
+            lineHeight: '1.85', 
             color: '#222222', 
             whiteSpace: 'pre-wrap',
             fontWeight: 400,
@@ -189,15 +191,15 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px' }}>
+        <div style={{ borderTop: '1px solid #e0e0e0', marginTop: '60px', paddingTop: '30px' }}>
           <button 
             onClick={() => router.push('/magazine')}
             style={{
-              backgroundColor: '#f1f3f5',
-              border: 'none',
-              padding: '10px 16px',
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e0e0e0',
+              padding: '10px 18px',
               borderRadius: '6px',
-              color: '#333',
+              color: '#333333',
               fontSize: '13px',
               fontWeight: 600,
               cursor: 'pointer'
