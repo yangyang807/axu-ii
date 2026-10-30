@@ -13,12 +13,14 @@
   --forest: #253B32;
 }
 
-* {
+/* Fixed box-sizing selector syntax error from '-' to '*' */
+*, *:before, *:after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -26,6 +28,9 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 a {
@@ -46,6 +51,8 @@ button, input, textarea, select {
   display: grid;
   grid-template-columns: 248px minmax(0, 1fr);
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -132,6 +139,7 @@ button, input, textarea, select {
 
 .main-area {
   min-width: 0;
+  width: 100%;
 }
 
 .topbar {
@@ -142,6 +150,7 @@ button, input, textarea, select {
   justify-content: space-between;
   padding: 0 42px;
   background: #FFFFFF;
+  width: 100%;
 }
 
 .eyebrow {
@@ -162,6 +171,7 @@ button, input, textarea, select {
   max-width: 1320px;
   margin: 0 auto;
   padding: 38px 42px 70px;
+  width: 100%;
 }
 
 /* --- HERO BANNER (HBS Executive Dark Style) --- */
@@ -197,6 +207,8 @@ button, input, textarea, select {
   font-weight: 600;
   margin: 15px 0;
   color: #FFFFFF;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .hero p {
@@ -205,6 +217,7 @@ button, input, textarea, select {
   line-height: 1.8;
   max-width: 620px;
   font-weight: 300;
+  overflow-wrap: break-word;
 }
 
 /* --- BUTTONS (HBS Accent Buttons) --- */
@@ -255,6 +268,7 @@ button, input, textarea, select {
   padding: 24px;
   border-radius: 0px;
   transition: border-color 0.2s ease;
+  width: 100%;
 }
 
 .stat-card {
@@ -301,6 +315,7 @@ button, input, textarea, select {
   font-size: 26px;
   font-weight: 600;
   margin: 6px 0 0;
+  overflow-wrap: break-word;
 }
 
 .section-head p {
@@ -326,6 +341,7 @@ button, input, textarea, select {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 8px;
+  overflow-wrap: break-word;
 }
 
 .panel-desc {
@@ -398,6 +414,7 @@ button, input, textarea, select {
   font-size: 16px;
   margin: 0;
   font-weight: 600;
+  overflow-wrap: break-word;
 }
 
 .source-card p {
@@ -456,6 +473,7 @@ button, input, textarea, select {
   font-size: 38px;
   font-weight: 600;
   margin: 8px 0 10px;
+  overflow-wrap: break-word;
 }
 
 .page-intro {
@@ -464,6 +482,7 @@ button, input, textarea, select {
   color: var(--muted);
   max-width: 700px;
   margin: 0 0 28px;
+  overflow-wrap: break-word;
 }
 
 .notice {
@@ -479,6 +498,8 @@ button, input, textarea, select {
   white-space: pre-wrap;
   font-size: 13px;
   line-height: 1.85;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .footer-note {
@@ -512,9 +533,11 @@ button, input, textarea, select {
   }
   .topbar {
     padding: 0 20px;
+    height: 60px;
   }
   .main-content {
-    padding: 24px 20px 50px;
+    /* Precise mobile side padding to prevent text sticking to edges */
+    padding: 24px 20px 60px;
   }
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -523,19 +546,26 @@ button, input, textarea, select {
     grid-template-columns: 1fr;
   }
   .hero {
-    padding: 32px 24px;
+    padding: 32px 20px;
   }
   .form-grid {
     grid-template-columns: 1fr;
   }
+  .page-title {
+    font-size: 28px;
+  }
 }
 
 @media(max-width: 450px) {
+  .main-content {
+    padding: 20px 16px 50px;
+  }
   .stats {
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .stat-card {
-    padding: 16px;
+    padding: 18px;
   }
   .stat-value {
     font-size: 26px;
@@ -544,7 +574,11 @@ button, input, textarea, select {
     display: none;
   }
   .hero:after {
-    font-size: 120px;
-    right: 4px;
+    font-size: 100px;
+    right: 2px;
+    bottom: -30px;
+  }
+  .page-title {
+    font-size: 24px;
   }
 }
