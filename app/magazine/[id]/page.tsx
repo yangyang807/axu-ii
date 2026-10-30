@@ -62,7 +62,7 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 24px', boxSizing: 'border-box', overflowX: 'hidden' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 20px', boxSizing: 'border-box', overflowX: 'hidden' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
@@ -80,8 +80,8 @@ export default function MagazineDetailPage() {
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }} className="pb-20">
       
-      {/* Main Article Container with proper side padding to prevent text from sticking to edges */}
-      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-6 sm:px-8 pt-6 sm:pt-10">
+      {/* Main Article Container with professional magazine side padding */}
+      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-5 sm:px-8 md:px-10 pt-6 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6">
@@ -147,7 +147,7 @@ export default function MagazineDetailPage() {
         {/* Title */}
         <h1 
           style={{ 
-            fontSize: 'clamp(20px, 4.5vw, 32px)', 
+            fontSize: 'clamp(22px, 5vw, 34px)', 
             color: '#111111', 
             lineHeight: '1.3', 
             margin: '0 0 20px 0', 
