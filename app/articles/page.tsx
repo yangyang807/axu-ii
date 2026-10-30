@@ -77,8 +77,8 @@ export default function BusinessAIBookKitPage() {
   });
 
   return (
-    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }} className="py-6 px-4 sm:py-8 sm:px-6 lg:px-10">
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }} className="py-6 px-5 sm:py-10 sm:px-8">
+      <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
         
         {/* Top Header Tag */}
         <div style={{ fontSize: '11px', color: '#c9b17b', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
@@ -86,19 +86,19 @@ export default function BusinessAIBookKitPage() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl sm:text-3xl" style={{ fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
+        <h1 className="text-2xl sm:text-3xl" style={{ fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
           Business & AI Book Kit
         </h1>
 
         {/* Subtitle Description */}
-        <p style={{ color: '#666666', fontSize: '14px', maxWidth: '720px', lineHeight: 1.6, marginBottom: '28px' }}>
+        <p style={{ color: '#666666', fontSize: '14px', maxWidth: '720px', lineHeight: 1.6, marginBottom: '28px', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
           Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
         </p>
 
         {/* Search and Filters Bar */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           {/* Search Bar */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '380px', boxSizing: 'border-box' }}>
             <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
             <input
               type="text"
@@ -110,24 +110,25 @@ export default function BusinessAIBookKitPage() {
                 padding: '10px 14px 10px 38px',
                 background: '#ffffff',
                 border: '1px solid #e5e7eb',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 color: '#111111',
                 fontSize: '13px',
                 outline: 'none',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)',
+                boxSizing: 'border-box'
               }}
             />
           </div>
 
           {/* Filters Buttons */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0" style={{ whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto" style={{ whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 style={{
                   padding: '7px 14px',
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   fontSize: '12px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -152,27 +153,28 @@ export default function BusinessAIBookKitPage() {
             No books found. Publish a book from the Admin Console using the <strong>Business & AI Book Kit</strong> category.
           </div>
         ) : (
-          /* Books Grid View (မိုဘိုင်းတွင် 1 column၊ ကွန်ပျူတာတွင် 2 columns ဖြင့် သပ်ရပ်သော Card များကို ပြသမည်) */
+          /* Books Grid View */
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm flex flex-col justify-between"
+                className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between"
+                style={{ boxSizing: 'border-box' }}
               >
                 <div>
-                  {/* Book Cover Image Thumbnail (ဖုန်းတွင် အလွန်မရှည်ဘဲ သင့်တင့်သော အမြင့် h-48 ဖြင့် ပြသမည်) */}
-                  <div className="w-full h-48 sm:h-60 relative bg-[#171a18]">
+                  {/* Book Cover Image Thumbnail */}
+                  <div className="w-full h-52 sm:h-64 relative bg-[#171a18] overflow-hidden">
                     <img 
                       src={book.coverUrl} 
                       alt={book.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95 }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95, display: 'block' }}
                     />
                   </div>
 
                   {/* Book Details */}
-                  <div className="p-4 sm:p-5">
+                  <div className="p-5 sm:p-6">
                     {/* Category & Meta */}
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center mb-2.5 flex-wrap gap-2">
                       <span style={{ fontSize: '11px', fontWeight: 700, color: '#c9b17b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         {book.category}
                       </span>
@@ -182,35 +184,38 @@ export default function BusinessAIBookKitPage() {
                     </div>
 
                     {/* Title & Subtitle */}
-                    <h3 className="text-base sm:text-lg font-bold text-[#111111] mb-1 font-serif line-clamp-1">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#111111] mb-1.5 font-serif line-clamp-2" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                       {book.title}
                     </h3>
-                    <p className="text-xs text-gray-500 mb-3 line-clamp-2">
+                    <p className="text-xs sm:text-sm text-gray-500 mb-4 line-clamp-2" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                       {book.subtitle}
                     </p>
 
-                    {/* Author Tag */}
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-3 font-medium">
-                      <User size={12} style={{ color: '#c9b17b' }} /> By {book.author} • {book.publishedDate}
+                    {/* Author Tag & Date */}
+                    <div className="flex items-center justify-between text-xs text-gray-600 mb-4 font-medium border-t border-gray-100 pt-3">
+                      <div className="flex items-center gap-1.5">
+                        <User size={12} style={{ color: '#c9b17b' }} /> By {book.author}
+                      </div>
+                      <span className="text-gray-400">{book.publishedDate}</span>
                     </div>
 
-                    {/* Summary (စာသားများ အလွန်အမင်း ရှည်မသွားစေရန် line-clamp ဖြင့် ၃ ကြောင်းသာ အဓိကပြမည်) */}
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">
+                    {/* Summary */}
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-2 line-clamp-3" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                       {book.summary}
                     </p>
                   </div>
                 </div>
 
                 {/* Bottom Action Buttons */}
-                <div className="p-4 sm:p-5 pt-0 border-t border-gray-100 flex gap-2 mt-auto">
+                <div className="p-5 sm:p-6 pt-0 border-t border-gray-100 flex gap-3 mt-auto">
                   <button style={{
                     flex: 1,
                     background: '#171a18',
                     color: '#ffffff',
                     border: 'none',
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    fontSize: '12px',
+                    padding: '10px 14px',
+                    borderRadius: '6px',
+                    fontSize: '13px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -218,7 +223,7 @@ export default function BusinessAIBookKitPage() {
                     justifyContent: 'center',
                     gap: '6px'
                   }}>
-                    <BookOpen size={13} /> Read Chapter
+                    <BookOpen size={14} /> Read Chapter
                   </button>
 
                   {/* PDF Download Button */}
@@ -234,9 +239,9 @@ export default function BusinessAIBookKitPage() {
                       background: '#ffffff',
                       border: '1px solid #e5e7eb',
                       color: book.downloadUrl ? '#374151' : '#9ca3af',
-                      padding: '8px 12px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
+                      padding: '10px 14px',
+                      borderRadius: '6px',
+                      fontSize: '13px',
                       fontWeight: 500,
                       cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
                       display: 'flex',
@@ -244,7 +249,7 @@ export default function BusinessAIBookKitPage() {
                       gap: '6px'
                     }}
                   >
-                    <Download size={13} /> PDF
+                    <Download size={14} /> PDF
                   </button>
                 </div>
 
