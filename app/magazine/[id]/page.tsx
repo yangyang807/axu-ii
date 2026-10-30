@@ -80,11 +80,11 @@ export default function MagazineDetailPage() {
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }} className="pb-20">
       
-      {/* Main Article Container with professional magazine side padding */}
-      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-5 sm:px-8 md:px-10 pt-6 sm:pt-10">
+      {/* Main Article Container - ဘေးဘောင် padding ကို ဖုန်းစခရင်မ်အတွက် ပိုမိုပေးထားပါသည် (px-6 sm:px-10) */}
+      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }} className="px-6 sm:px-10 pt-6 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6" style={{ boxSizing: 'border-box' }}>
           
           {/* Back Button & Date */}
           <div className="flex items-center gap-4 flex-wrap">
@@ -129,7 +129,7 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Author Profile Info Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px', boxSizing: 'border-box' }}>
           <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
             AX
           </div>
@@ -153,7 +153,8 @@ export default function MagazineDetailPage() {
             margin: '0 0 20px 0', 
             fontWeight: 800,
             overflowWrap: 'break-word',
-            wordBreak: 'break-word'
+            wordBreak: 'break-word',
+            boxSizing: 'border-box'
           }}
         >
           {magazine.title}
@@ -161,7 +162,7 @@ export default function MagazineDetailPage() {
 
         {/* Cover Image */}
         {coverImage && (
-          <div className="w-full h-56 sm:h-72 md:h-80 overflow-hidden rounded-lg mb-6 bg-gray-100" style={{ maxWidth: '100%' }}>
+          <div className="w-full h-56 sm:h-72 md:h-80 overflow-hidden rounded-lg mb-6 bg-gray-100" style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
             <img 
               src={coverImage} 
               alt={magazine.title} 
@@ -183,14 +184,15 @@ export default function MagazineDetailPage() {
             fontWeight: 400,
             overflowWrap: 'break-word',
             wordBreak: 'break-word',
-            width: '100%'
+            width: '100%',
+            boxSizing: 'border-box'
           }}
         >
           {magazine.body_md || magazine.excerpt}
         </div>
 
         {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px', marginBottom: '40px' }}>
+        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px', marginBottom: '40px', boxSizing: 'border-box' }}>
           <button 
             onClick={() => router.push('/magazine')}
             style={{
