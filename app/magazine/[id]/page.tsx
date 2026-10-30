@@ -54,7 +54,7 @@ export default function MagazineDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#666', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#666', fontSize: '15px' }}>
         Loading article...
       </div>
     );
@@ -62,7 +62,7 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 24px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111', textAlign: 'center', padding: '120px 24px' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
@@ -78,13 +78,13 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif' }} className="pb-20">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', overflowX: 'hidden' }} className="pb-20">
       
       {/* Main Article Container */}
-      <main className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10">
+      <main style={{ maxWidth: '780px', margin: '0 auto', width: '100%' }} className="px-4 sm:px-6 pt-6 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-6">
           
           {/* Back Button & Date */}
           <div className="flex items-center gap-4 flex-wrap">
@@ -129,29 +129,39 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Author Profile Info Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
+          <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', flexShrink: 0 }}>
             AX
           </div>
           <div>
-            <div style={{ fontSize: '15px', fontWeight: 700, color: '#111' }}>AXU-II Editorial Staff</div>
-            <div style={{ fontSize: '13px', color: '#666' }}>Global Research & Publication</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#111' }}>AXU-II Editorial Staff</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>Global Research & Publication</div>
           </div>
         </div>
 
         {/* Category Label */}
-        <div style={{ fontSize: '13px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '10px' }}>
+        <div style={{ fontSize: '12px', color: '#0056b3', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
           {magazine.category || 'MAGAZINE'}
         </div>
 
-        {/* Title (Mobile တွင် အရွယ်အစားသင့်လျော်စေရန် text-2xl သို့မဟုတ် text-3xl သုံးထားသည်) */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl" style={{ color: '#111111', lineHeight: '1.25', margin: '0 0 24px 0', fontWeight: 800, letterSpacing: '-0.5px', wordBreak: 'break-word' }}>
+        {/* Title (ဖုန်းစခരീန်းတွင် အလွန်ကြီးမားမနေဘဲ သင့်တင့်သော အရွယ်အစားနှင့် word-break သုံးထားသည်) */}
+        <h1 
+          style={{ 
+            fontSize: 'clamp(22px, 5vw, 36px)', 
+            color: '#111111', 
+            lineHeight: '1.3', 
+            margin: '0 0 20px 0', 
+            fontWeight: 800,
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word'
+          }}
+        >
           {magazine.title}
         </h1>
 
         {/* Cover Image */}
         {coverImage && (
-          <div className="w-full h-64 sm:h-80 md:h-96 overflow-hidden rounded-lg mb-8 bg-gray-100">
+          <div className="w-full h-56 sm:h-72 md:h-80 overflow-hidden rounded-lg mb-6 bg-gray-100">
             <img 
               src={coverImage} 
               alt={magazine.title} 
@@ -165,12 +175,13 @@ export default function MagazineDetailPage() {
 
         {/* Article Body Content */}
         <div 
-          className="text-base sm:text-lg"
           style={{ 
+            fontSize: '16px', 
             lineHeight: '1.8', 
             color: '#222222', 
             whiteSpace: 'pre-wrap',
             fontWeight: 400,
+            overflowWrap: 'break-word',
             wordBreak: 'break-word'
           }}
         >
@@ -178,16 +189,16 @@ export default function MagazineDetailPage() {
         </div>
 
         {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '60px', paddingTop: '32px' }}>
+        <div style={{ borderTop: '1px solid #eaeaea', marginTop: '40px', paddingTop: '24px' }}>
           <button 
             onClick={() => router.push('/magazine')}
             style={{
               backgroundColor: '#f1f3f5',
               border: 'none',
-              padding: '12px 20px',
+              padding: '10px 16px',
               borderRadius: '6px',
               color: '#333',
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: 600,
               cursor: 'pointer'
             }}

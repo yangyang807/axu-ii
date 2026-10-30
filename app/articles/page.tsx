@@ -152,102 +152,102 @@ export default function BusinessAIBookKitPage() {
             No books found. Publish a book from the Admin Console using the <strong>Business & AI Book Kit</strong> category.
           </div>
         ) : (
-          /* Books Grid View */
+          /* Books Grid View (မိုဘိုင်းတွင် 1 column၊ ကွန်ပျူတာတွင် 2 columns ဖြင့် သပ်ရပ်သော Card များကို ပြသမည်) */
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                className="flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-200"
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm flex flex-col justify-between"
               >
-                {/* Book Cover Image */}
-                <div className="w-full h-64 sm:h-72 relative bg-[#171a18]">
-                  <img 
-                    src={book.coverUrl} 
-                    alt={book.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95 }}
-                  />
-                </div>
+                <div>
+                  {/* Book Cover Image Thumbnail (ဖုန်းတွင် အလွန်မရှည်ဘဲ သင့်တင့်သော အမြင့် h-48 ဖြင့် ပြသမည်) */}
+                  <div className="w-full h-48 sm:h-60 relative bg-[#171a18]">
+                    <img 
+                      src={book.coverUrl} 
+                      alt={book.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95 }}
+                    />
+                  </div>
 
-                {/* Book Details */}
-                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
-                  <div>
+                  {/* Book Details */}
+                  <div className="p-4 sm:p-5">
                     {/* Category & Meta */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <div className="flex justify-between items-center mb-2">
                       <span style={{ fontSize: '11px', fontWeight: 700, color: '#c9b17b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         {book.category}
                       </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#9ca3af' }}>
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
                         <Clock size={12} /> {book.readTime}
                       </div>
                     </div>
 
                     {/* Title & Subtitle */}
-                    <h3 style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '6px', lineHeight: 1.3 }}>
+                    <h3 className="text-base sm:text-lg font-bold text-[#111111] mb-1 font-serif line-clamp-1">
                       {book.title}
                     </h3>
-                    <p style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280', marginBottom: '12px', lineHeight: 1.4 }}>
+                    <p className="text-xs text-gray-500 mb-3 line-clamp-2">
                       {book.subtitle}
                     </p>
 
                     {/* Author Tag */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#374151', marginBottom: '14px', fontWeight: 500 }}>
-                      <User size={13} style={{ color: '#c9b17b' }} /> By {book.author} • {book.publishedDate}
+                    <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-3 font-medium">
+                      <User size={12} style={{ color: '#c9b17b' }} /> By {book.author} • {book.publishedDate}
                     </div>
 
-                    {/* Summary */}
-                    <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: 1.5, marginBottom: '16px' }}>
+                    {/* Summary (စာသားများ အလွန်အမင်း ရှည်မသွားစေရန် line-clamp ဖြင့် ၃ ကြောင်းသာ အဓိကပြမည်) */}
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">
                       {book.summary}
                     </p>
                   </div>
+                </div>
 
-                  {/* Bottom Action Buttons */}
-                  <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '12px', display: 'flex', gap: '10px' }}>
-                    <button style={{
-                      flex: 1,
-                      background: '#171a18',
-                      color: '#ffffff',
-                      border: 'none',
+                {/* Bottom Action Buttons */}
+                <div className="p-4 sm:p-5 pt-0 border-t border-gray-100 flex gap-2 mt-auto">
+                  <button style={{
+                    flex: 1,
+                    background: '#171a18',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '8px 12px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}>
+                    <BookOpen size={13} /> Read Chapter
+                  </button>
+
+                  {/* PDF Download Button */}
+                  <button 
+                    onClick={() => {
+                      if (book.downloadUrl) {
+                        window.open(book.downloadUrl, '_blank');
+                      } else {
+                        alert('PDF link not available for this book yet.');
+                      }
+                    }}
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      color: book.downloadUrl ? '#374151' : '#9ca3af',
                       padding: '8px 12px',
                       borderRadius: '4px',
                       fontSize: '12px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
+                      fontWeight: 500,
+                      cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
                       gap: '6px'
-                    }}>
-                      <BookOpen size={13} /> Read Chapter
-                    </button>
-
-                    {/* PDF Download Button */}
-                    <button 
-                      onClick={() => {
-                        if (book.downloadUrl) {
-                          window.open(book.downloadUrl, '_blank');
-                        } else {
-                          alert('PDF link not available for this book yet.');
-                        }
-                      }}
-                      style={{
-                        background: '#ffffff',
-                        border: '1px solid #e5e7eb',
-                        color: book.downloadUrl ? '#374151' : '#9ca3af',
-                        padding: '8px 12px',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px'
-                      }}
-                    >
-                      <Download size={13} /> PDF
-                    </button>
-                  </div>
-
+                    }}
+                  >
+                    <Download size={13} /> PDF
+                  </button>
                 </div>
+
               </div>
             ))}
           </div>
