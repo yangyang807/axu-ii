@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase';
 import { 
   BookOpen, 
   Search, 
-  Download 
+  Download,
+  Clock
 } from 'lucide-react';
 
 interface BookItem {
@@ -76,7 +77,6 @@ export default function BusinessAIBookKitPage() {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111' }}>
-      {/* Container တွင် padding များကို ဖုန်းနှင့် ကွန်ပျူတာအတွက် အံဝင်ခွင်ကျ သင့်တင့်စွာ ချိန်ညှိထားသည် */}
       <div style={{ maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }} className="py-6 px-4 sm:py-10 sm:px-8">
         
         {/* HEADER SECTION */}
@@ -114,7 +114,7 @@ export default function BusinessAIBookKitPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar" style={{ whiteSpace: 'nowrap' }}>
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0" style={{ whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -137,7 +137,7 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* BOOK LIST */}
+        {/* BOOK LIST (Mobile: Responsive Card View, Desktop: Clean Horizontal Layout) */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: '#777777', fontSize: '14px' }}>Loading published books...</div>
         ) : filteredBooks.length === 0 ? (
@@ -145,45 +145,57 @@ export default function BusinessAIBookKitPage() {
             No books found.
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             {filteredBooks.map((book) => (
               <article 
                 key={book.id}
-                className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-5 pb-6 border-b border-gray-200 items-start"
+                className="bg-white border border-gray-200 md:border-0 md:border-b md:border-gray-200 rounded-xl md:rounded-none overflow-hidden p-0 md:pb-6 shadow-sm md:shadow-none flex flex-col md:grid md:grid-cols-[1fr_200px] gap-4 md:gap-6 items-start"
               >
-                <div>
-                  <div style={{ fontSize: '11px', color: '#b8860b', fontWeight: 700, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    {book.category} • {book.publishedDate}
+                {/* Book Cover Image */}
+                <div className="w-full h-48 sm:h-56 md:h-[150px] overflow-hidden bg-gray-100 order-first md:order-last">
+                  <img 
+                    src={book.coverUrl} 
+                    alt={book.title} 
+                    className="w-full h-full object-cover block"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+
+                {/* Content Details */}
+                <div className="p-4 md:p-0 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center justify-between md:justify-start gap-2 mb-1.5">
+                      <span className="text-[11px] font-bold text-[#b8860b] uppercase tracking-wider">
+                        {book.category}
+                      </span>
+                      <span className="text-[11px] text-gray-400 font-medium">
+                        • {book.publishedDate}
+                      </span>
+                    </div>
+
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-serif text-[#111111] font-semibold leading-snug mb-1">
+                      {book.title}
+                    </h2>
+
+                    <p className="text-xs sm:text-sm text-gray-500 font-medium mb-2 leading-relaxed">
+                      {book.subtitle}
+                    </p>
+
+                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-4 line-clamp-3">
+                      {book.summary}
+                    </p>
                   </div>
 
-                  <h2 className="text-xl sm:text-2xl" style={{ fontFamily: 'serif', color: '#111111', margin: '0 0 6px 0', fontWeight: 600, lineHeight: '1.3' }}>
-                    {book.title}
-                  </h2>
-
-                  <p style={{ fontSize: '13px', color: '#666666', marginBottom: '10px', fontWeight: 500, lineHeight: '1.4' }}>
-                    {book.subtitle}
-                  </p>
-
-                  <p style={{ 
-                    color: '#333333', 
-                    fontSize: '14px', 
-                    lineHeight: '1.6', 
-                    margin: '0 0 14px 0',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                  }}>
-                    {book.summary}
-                  </p>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2 pt-2 border-t border-gray-100 md:border-0">
                     <button style={{
                       background: '#171a18',
                       color: '#ffffff',
                       border: 'none',
                       padding: '7px 14px',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                       fontSize: '12px',
                       fontWeight: 600,
                       cursor: 'pointer',
@@ -207,7 +219,7 @@ export default function BusinessAIBookKitPage() {
                         border: '1px solid #d1d5db',
                         color: book.downloadUrl ? '#374151' : '#9ca3af',
                         padding: '7px 14px',
-                        borderRadius: '4px',
+                        borderRadius: '6px',
                         fontSize: '12px',
                         fontWeight: 500,
                         cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
@@ -221,16 +233,6 @@ export default function BusinessAIBookKitPage() {
                   </div>
                 </div>
 
-                <div className="w-full h-44 md:h-[140px] overflow-hidden rounded-md bg-gray-100 order-first md:order-last">
-                  <img 
-                    src={book.coverUrl} 
-                    alt={book.title} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
               </article>
             ))}
           </div>

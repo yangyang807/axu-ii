@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, use } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
-import { ArrowLeft, Calendar, Facebook, Twitter, Linkedin, Mail } from 'lucide-react';
+import { ArrowLeft, Share2, Bookmark, MessageSquare } from 'lucide-react';
 
 interface Article {
   id: string;
@@ -15,8 +15,8 @@ interface Article {
   created_at: string;
 }
 
-export default function MagazineDetailPage() {
-  const params = useParams();
+export default function MagazineDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
   const router = useRouter();
   const [magazine, setMagazine] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,12 +24,12 @@ export default function MagazineDetailPage() {
 
   useEffect(() => {
     async function fetchArticle() {
-      if (!params?.id) return;
+      if (!resolvedParams?.id) return;
       
       const { data, error } = await supabase
         .from('articles')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', resolvedParams.id)
         .single();
 
       if (error) {
@@ -41,7 +41,7 @@ export default function MagazineDetailPage() {
     }
 
     fetchArticle();
-  }, [params?.id]);
+  }, [resolvedParams?.id, supabase]);
 
   const resolveImageUrl = (urlOrPath?: string) => {
     if (!urlOrPath) return null;
@@ -55,7 +55,7 @@ export default function MagazineDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#777777', fontSize: '15px', fontFamily: 'sans-serif' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#777777', fontSize: '15px', fontFamily: 'Georgia, serif' }}>
         Loading article...
       </div>
     );
@@ -63,11 +63,11 @@ export default function MagazineDetailPage() {
 
   if (!magazine) {
     return (
-      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', textAlign: 'center', padding: '120px 24px', fontFamily: 'sans-serif' }}>
+      <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', textAlign: 'center', padding: '120px 24px', fontFamily: 'Georgia, serif' }}>
         <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Article not found.</h2>
         <button 
           onClick={() => router.push('/magazine')} 
-          style={{ color: '#b8860b', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}
+          style={{ color: '#111111', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 600, textDecoration: 'underline' }}
         >
           ← Back to Daily Magazine
         </button>
@@ -78,134 +78,107 @@ export default function MagazineDetailPage() {
   const rawUrl = magazine.source_urls && magazine.source_urls.length > 0 ? magazine.source_urls[0] : undefined;
   const coverImage = resolveImageUrl(rawUrl);
 
+  const formattedDate = new Date(magazine.created_at).toLocaleDateString('en-US', { 
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric' 
+  }).toUpperCase() + ' • ' + new Date(magazine.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toUpperCase() + ' ET';
+
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', fontFamily: 'sans-serif' }} className="pb-20 overflow-x-hidden">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111', fontFamily: 'Georgia, serif' }} className="pb-24 overflow-x-hidden selection:bg-black selection:text-white">
       
-      {/* Main Article Container */}
-      <main style={{ maxWidth: '800px', margin: '0 auto' }} className="px-5 sm:px-8 pt-8 sm:pt-12">
+      {/* Top Navigation Bar */}
+      <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 z-50 px-4 sm:px-8 py-3 flex items-center justify-between max-w-[740px] mx-auto">
+        <button 
+          onClick={() => router.push('/magazine')}
+          className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-wider text-gray-700 hover:text-black transition-colors"
+        >
+          <ArrowLeft size={14} /> Back
+        </button>
+        <div className="text-xs font-sans font-bold uppercase tracking-widest text-gray-400">
+          AXU-II MAGAZINE
+        </div>
+      </div>
+
+      {/* Main Article Container (The Atlantic / Professional Reading Width) */}
+      <main className="w-full max-w-[680px] mx-auto px-5 sm:px-6 pt-6 sm:pt-10">
         
-        {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 mb-8">
-          
-          {/* Back Button & Date */}
-          <div className="flex items-center gap-4 flex-wrap">
-            <button 
-              onClick={() => router.push('/magazine')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'none',
-                border: 'none',
-                color: '#555555',
-                fontSize: '14px',
-                cursor: 'pointer',
-                fontWeight: 600,
-                padding: 0
-              }}
-            >
-              <ArrowLeft size={16} /> Back
-            </button>
-
-            <div style={{ color: '#666666', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Calendar size={14} /> {new Date(magazine.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            </div>
-          </div>
-
-          {/* Social Share Icons */}
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#3b5998', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Facebook size={14} />
-            </div>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#000000', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Twitter size={14} />
-            </div>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#0077b5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Linkedin size={14} />
-            </div>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#555555', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Mail size={14} />
-            </div>
-          </div>
-        </div>
-
-        {/* Author Profile Info Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-          <div style={{ width: '44px', height: '44px', borderRadius: '50%', backgroundColor: '#171a18', color: '#c9b17b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '15px', flexShrink: 0 }}>
-            AX
-          </div>
-          <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: '#111111' }}>AXU-II Editorial Staff</div>
-            <div style={{ fontSize: '12px', color: '#666666' }}>Global Research & Publication</div>
-          </div>
-        </div>
-
-        {/* Category Label */}
-        <div style={{ fontSize: '12px', color: '#b8860b', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px' }}>
-          {magazine.category || 'MAGAZINE'}
-        </div>
-
-        {/* Title (Mobile တွင် ကျဉ်းမြောင်းလွန်းခြင်းမရှိဘဲ ဖတ်ရလွယ်ကူစေရန် text-2xl သို့မဟုတ် sm:text-3xl ကို သုံးထားသည်) */}
+        {/* Title */}
         <h1 
-          className="text-2xl sm:text-3xl md:text-4xl"
-          style={{ 
-            color: '#111111', 
-            lineHeight: '1.3', 
-            margin: '0 0 24px 0', 
-            fontWeight: 700,
-            fontFamily: 'serif',
-            overflowWrap: 'break-word',
-            wordBreak: 'break-word'
-          }}
+          className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#111111] mb-4"
+          style={{ lineHeight: '1.15', fontFamily: 'Georgia, serif' }}
         >
           {magazine.title}
         </h1>
 
+        {/* Excerpt / Subtitle */}
+        {magazine.excerpt && (
+          <p className="text-lg sm:text-xl text-gray-600 font-normal mb-6 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
+            {magazine.excerpt}
+          </p>
+        )}
+
+        {/* Author Byline */}
+        <div className="text-xs sm:text-sm font-sans font-medium text-gray-800 mb-6 pb-6 border-b border-gray-200">
+          By <span className="font-bold underline decoration-1 underline-offset-4">AXU-II Editorial Staff</span>
+        </div>
+
         {/* Cover Image */}
         {coverImage && (
-          <div className="w-full h-56 sm:h-72 md:h-96 overflow-hidden rounded-lg mb-8 bg-gray-100">
-            <img 
-              src={coverImage} 
-              alt={magazine.title} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
-              onError={(e) => {
-                e.currentTarget.parentElement?.remove();
-              }}
-            />
+          <div className="mb-8 -mx-5 sm:mx-0">
+            <div className="w-full h-64 sm:h-80 md:h-[420px] overflow-hidden bg-gray-100 sm:rounded-md">
+              <img 
+                src={coverImage} 
+                alt={magazine.title} 
+                className="w-full h-full object-cover" 
+                onError={(e) => {
+                  e.currentTarget.parentElement?.remove();
+                }}
+              />
+            </div>
+            <div className="text-[11px] font-sans text-gray-500 mt-2 px-5 sm:px-0">
+              Photo: AXU-II Global Research & Publication Archive
+            </div>
           </div>
         )}
 
-        {/* Article Body Content (စာသားများ အချင်းချင်း မကပ်နေစေရန် line-height နှင့် padding များကို သပ်ရပ်စွာ ချိန်ညှိထားသည်) */}
+        {/* Date and Social Interaction Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-3 border-y border-gray-200 mb-8 text-xs font-sans text-gray-600">
+          <div className="tracking-wider uppercase font-medium">
+            {formattedDate}
+          </div>
+          <div className="flex items-center gap-6">
+            <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
+              <Share2 size={14} /> SHARE
+            </button>
+            <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
+              <MessageSquare size={14} /> DISCUSS
+            </button>
+            <button className="flex items-center gap-1.5 hover:text-black font-semibold transition-colors">
+              <Bookmark size={14} /> SAVE
+            </button>
+          </div>
+        </div>
+
+        {/* Article Body Content (Professional Editorial Typography) */}
         <div 
-          className="text-base sm:text-lg"
-          style={{ 
-            lineHeight: '1.85', 
-            color: '#222222', 
-            whiteSpace: 'pre-wrap',
-            fontWeight: 400,
-            overflowWrap: 'break-word',
-            wordBreak: 'break-word'
-          }}
+          className="text-lg sm:text-xl text-[#1a1a1a] leading-[1.8] font-normal space-y-6"
+          style={{ fontFamily: 'Georgia, serif', overflowWrap: 'break-word', wordBreak: 'break-word' }}
         >
           {magazine.body_md || magazine.excerpt}
         </div>
 
-        {/* Bottom Back Button */}
-        <div style={{ borderTop: '1px solid #e0e0e0', marginTop: '60px', paddingTop: '30px' }}>
+        {/* Bottom Author / Publication Signoff */}
+        <div className="mt-16 pt-8 border-t border-gray-200 font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="text-sm font-bold text-gray-900">AXU-II Editorial Staff</div>
+            <div className="text-xs text-gray-500 mt-0.5">Global Research, Business Blueprints & AI Execution Guides.</div>
+          </div>
           <button 
             onClick={() => router.push('/magazine')}
-            style={{
-              backgroundColor: '#f8f9fa',
-              border: '1px solid #e0e0e0',
-              padding: '10px 18px',
-              borderRadius: '6px',
-              color: '#333333',
-              fontSize: '13px',
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}
+            className="text-xs font-bold uppercase tracking-wider bg-black text-white px-4 py-2.5 rounded hover:bg-gray-800 transition-colors"
           >
-            ← Back to All Articles
+            ← All Articles
           </button>
         </div>
 
