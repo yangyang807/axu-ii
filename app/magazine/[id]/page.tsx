@@ -78,16 +78,16 @@ export default function MagazineDetailPage() {
   const coverImage = resolveImageUrl(rawUrl);
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', paddingBottom: '80px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif' }}>
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#222222', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif' }} className="pb-20">
       
       {/* Main Article Container */}
-      <main style={{ maxWidth: '780px', margin: '0 auto', padding: '40px 24px 0 24px' }}>
+      <main className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10">
         
         {/* TOP CONTROLS: Back Button, Date & Share Icons */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #eaeaea', paddingBottom: '16px', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-4 mb-8">
           
           {/* Back Button & Date */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          <div className="flex items-center gap-4 flex-wrap">
             <button 
               onClick={() => router.push('/magazine')}
               style={{
@@ -130,7 +130,7 @@ export default function MagazineDetailPage() {
 
         {/* Author Profile Info Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#003366', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px', flexShrink: 0 }}>
             AX
           </div>
           <div>
@@ -144,14 +144,14 @@ export default function MagazineDetailPage() {
           {magazine.category || 'MAGAZINE'}
         </div>
 
-        {/* Title */}
-        <h1 style={{ fontSize: '38px', color: '#111111', lineHeight: '1.2', margin: '0 0 24px 0', fontWeight: 800, letterSpacing: '-0.5px' }}>
+        {/* Title (Mobile တွင် အရွယ်အစားသင့်လျော်စေရန် text-2xl သို့မဟုတ် text-3xl သုံးထားသည်) */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl" style={{ color: '#111111', lineHeight: '1.25', margin: '0 0 24px 0', fontWeight: 800, letterSpacing: '-0.5px', wordBreak: 'break-word' }}>
           {magazine.title}
         </h1>
 
         {/* Cover Image */}
         {coverImage && (
-          <div style={{ width: '100%', maxHeight: '440px', overflow: 'hidden', borderRadius: '8px', marginBottom: '36px', backgroundColor: '#f5f5f5' }}>
+          <div className="w-full h-64 sm:h-80 md:h-96 overflow-hidden rounded-lg mb-8 bg-gray-100">
             <img 
               src={coverImage} 
               alt={magazine.title} 
@@ -163,14 +163,15 @@ export default function MagazineDetailPage() {
           </div>
         )}
 
-        {/* Article Body Content (စစ်ဆေးပြီးသား အကြောင်းအရာအစစ်အမှန်ကိုသာ တစ်ကြိမ်တည်းပြသမည်) */}
+        {/* Article Body Content */}
         <div 
+          className="text-base sm:text-lg"
           style={{ 
-            fontSize: '17px', 
             lineHeight: '1.8', 
             color: '#222222', 
             whiteSpace: 'pre-wrap',
-            fontWeight: 400
+            fontWeight: 400,
+            wordBreak: 'break-word'
           }}
         >
           {magazine.body_md || magazine.excerpt}

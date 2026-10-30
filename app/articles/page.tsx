@@ -95,7 +95,7 @@ export default function BusinessAIBookKitPage() {
           Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
         </p>
 
-        {/* Search and Filters Bar (Mobile တွင် အောက်ချင်းဆင်းရန် Flex-col သုံးထားသည်) */}
+        {/* Search and Filters Bar */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           {/* Search Bar */}
           <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
@@ -119,8 +119,8 @@ export default function BusinessAIBookKitPage() {
             />
           </div>
 
-          {/* Filters Buttons (Mobile တွင် ဘေးတိုက် scroll ဆွဲ၍ရရန် overflow-x-auto သုံးထားသည်) */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar" style={{ whiteSpace: 'nowrap' }}>
+          {/* Filters Buttons */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0" style={{ whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -152,19 +152,19 @@ export default function BusinessAIBookKitPage() {
             No books found. Publish a book from the Admin Console using the <strong>Business & AI Book Kit</strong> category.
           </div>
         ) : (
-          /* Books Grid View (Mobile တွင် 1 column၊ Tablet/Desktop တွင် responsive လိုက်၍ ကော်လံများပြောင်းမည်) */
+          /* Books Grid View */
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                className="flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-200"
+                className="flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm transition-all duration-200"
               >
-                {/* Book Cover Image (Mobile တွင် အထက်၊ Desktop တွင် ဘယ်ဘက်တွင်ပြမည်) */}
-                <div className="w-full sm:w-[180px] sm:min-w-[180px] h-52 sm:h-auto relative bg-[#171a18]">
+                {/* Book Cover Image */}
+                <div className="w-full h-64 sm:h-72 relative bg-[#171a18]">
                   <img 
                     src={book.coverUrl} 
                     alt={book.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95 }}
                   />
                 </div>
 
