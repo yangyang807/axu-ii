@@ -201,21 +201,59 @@ export default function MagazineListPage() {
               @media (min-width: 1024px) {
                 .magazine-grid {
                   display: grid;
-                  grid-template-columns: 1fr 1.5fr 1fr;
-                  gap: 32px;
+                  grid-template-columns: 1fr 1.6fr 1fr;
+                  gap: 28px;
                   align-items: start;
                 }
                 .hero-img {
-                  height: 320px;
+                  height: 340px;
                 }
               }
             `}} />
 
+            {/* DESKTOP & MOBILE CORRECT ORDER GRID */}
             <div className="magazine-grid">
               
-              {/* FEATURED HERO STORY */}
+              {/* 1. LEFT COLUMN: LATEST INSIGHTS */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
+                <div style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
+                  Latest Insights
+                </div>
+                {leftColumnArticles.map((item) => (
+                  <article key={item.id} style={{ borderBottom: '1px solid #f3f4f6', paddingBottom: '16px' }}>
+                    <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase' }}>
+                      {item.category || 'NEWS'}
+                    </span>
+                    
+                    {item.source_urls && item.source_urls[0] && (
+                      <div 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ width: '100%', height: '140px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', margin: '8px 0', cursor: 'pointer' }}
+                      >
+                        <img 
+                          src={getValidImageUrl(item.source_urls[0])} 
+                          alt={item.title} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      </div>
+                    )}
+
+                    <h3 
+                      onClick={() => setDetailArticle(item)}
+                      style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '4px 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, WebkitLineClamp: 2 }}>
+                      {item.excerpt || item.body_md}
+                    </p>
+                  </article>
+                ))}
+              </div>
+
+              {/* 2. CENTER COLUMN: FEATURED HERO STORY */}
               {heroArticle && (
-                <div style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
                   <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#6b7280', marginBottom: '8px' }}>
                     FEATURED STORY • {new Date(heroArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
@@ -260,44 +298,7 @@ export default function MagazineListPage() {
                 </div>
               )}
 
-              {/* LEFT COLUMN: LATEST INSIGHTS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }}>
-                <div style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
-                  Latest Insights
-                </div>
-                {leftColumnArticles.map((item) => (
-                  <article key={item.id} style={{ borderBottom: '1px solid #f3f4f6', paddingBottom: '16px' }}>
-                    <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase' }}>
-                      {item.category || 'NEWS'}
-                    </span>
-                    
-                    {item.source_urls && item.source_urls[0] && (
-                      <div 
-                        onClick={() => setDetailArticle(item)}
-                        style={{ width: '100%', height: '140px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', margin: '8px 0', cursor: 'pointer' }}
-                      >
-                        <img 
-                          src={getValidImageUrl(item.source_urls[0])} 
-                          alt={item.title} 
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                        />
-                      </div>
-                    )}
-
-                    <h3 
-                      onClick={() => setDetailArticle(item)}
-                      style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '4px 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
-                    >
-                      {item.title}
-                    </h3>
-                    <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, WebkitLineClamp: 2 }}>
-                      {item.excerpt || item.body_md}
-                    </p>
-                  </article>
-                ))}
-              </div>
-
-              {/* RIGHT COLUMN: MOST READ */}
+              {/* 3. RIGHT COLUMN: MOST READ */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
                   <span style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>Most Read</span>
