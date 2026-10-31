@@ -8,28 +8,33 @@ import {
   Menu, 
   X, 
   BookOpen, 
-  TrendingUp 
+  TrendingUp, 
+  ChevronDown 
 } from 'lucide-react';
 
-interface Magazine {
+interface MagazineItem {
   id: string;
   title: string;
+  subtitle?: string;
   excerpt?: string;
   body_md?: string;
   source_urls?: string[];
   created_at: string;
   category: string;
+  pdf_url?: string;
+  file_url?: string;
 }
 
 export default function MagazineListPage() {
-  const [magazines, setMagazines] = useState<Magazine[]>([]);
+  const [magazines, setMagazines] = useState<MagazineItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [visibleCount, setVisibleCount] = useState<number>(6); // Initially show limited, expand on "See More"
   
   // Detail Modal State
-  const [detailArticle, setDetailArticle] = useState<Magazine | null>(null);
+  const [detailArticle, setDetailArticle] = useState<MagazineItem | null>(null);
 
   const supabase = createClient();
 
@@ -59,7 +64,7 @@ export default function MagazineListPage() {
   }, [supabase]);
 
   const getValidImageUrl = (urlOrPath?: string) => {
-    if (!urlOrPath) return null;
+    if (!urlOrPath) return 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=600&auto=format&fit=crop';
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
       return urlOrPath;
     }
@@ -68,140 +73,153 @@ export default function MagazineListPage() {
     return `${supabaseUrl}/storage/v1/object/public/magazine-images/${cleanPath}`;
   };
 
-  const navCategories = ['NEWS', 'TECH', 'DESIGN', 'LEADERSHIP', 'WORK LIFE', 'VIDEO', 'PODCASTS', 'GAMES', 'EVENTS', 'PARTNER STORIES'];
-  const topicBadges = ['ROBOTIC HOMEBUILDING', 'PLUG-IN SOLAR', 'SOCIAL SECURITY UPDATE', 'EMPLOYEE ENGAGEMENT HITS A NEW LOW'];
+  const categories = ['All', 'News', 'Tech', 'Business Strategy', 'Leadership', 'Work Life'];
 
   const filteredMagazines = magazines.filter((item) => {
+    const matchesCategory = selectedCategory === 'All' || item.category?.toLowerCase() === selectedCategory.toLowerCase();
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           (item.excerpt && item.excerpt.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesSearch;
+    return matchesCategory && matchesSearch;
   });
 
   const heroArticle = filteredMagazines.length > 0 ? filteredMagazines[0] : null;
   const leftColumnArticles = filteredMagazines.slice(1, 4);
   const mostReadArticles = filteredMagazines.slice(0, 3);
-  const mobileExtraArticles = filteredMagazines.slice(1, 5);
+  
+  // Extra stories for "See More Stories" section
+  const extraStories = filteredMagazines.slice(4, visibleCount);
+  const hasMoreStories = filteredMagazines.length > 4 && visibleCount < filteredMagazines.length;
 
   return (
-    <div className="bg-white text-[#111111] min-h-screen font-sans selection:bg-black selection:text-white">
+    <div style={{ background: '#ffffff', color: '#111111', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       
-      {/* 1. TOP UTILITY HEADER */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative">
+      {/* 1. TOP HEADER SECTION */}
+      <div style={{ borderBottom: '1px solid #e5e7eb', padding: '16px 20px' }}>
+        <div style={{ maxWidth: '1300px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           
-          {/* Left Actions */}
-          <div className="flex items-center gap-4">
-            <button className="p-1 hover:opacity-75 transition-opacity">
-              <Menu size={22} className="text-black" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+              <Menu size={20} />
             </button>
             <button 
-              onClick={() => setIsSearchOpen(!isSearchOpen)} 
-              className="p-1 hover:opacity-75 transition-opacity"
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
             >
-              <Search size={20} className="text-black" />
+              <Search size={18} />
             </button>
           </div>
 
-          {/* Center Main Magazine Title */}
-          <div className="absolute left-1/2 -translate-x-1/2 text-center">
-            <Link href="/magazine" className="inline-block">
-              <h1 className="text-2xl sm:text-4xl font-black font-serif tracking-tight uppercase leading-none hover:opacity-90 transition-opacity">
-                AXU-II DAILY MAGAZINE
-              </h1>
-            </Link>
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ fontSize: '10px', fontWeight: 900, color: '#b8860b', letterSpacing: '1.5px', textTransform: 'uppercase', display: 'block', marginBottom: '2px' }}>
+              AXU-II KNOWLEDGE OS
+            </span>
+            <h1 style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'serif', letterSpacing: '-0.5px', margin: 0, textTransform: 'uppercase' }}>
+              AXU-II DAILY MAGAZINE
+            </h1>
           </div>
 
-          {/* Right Action Button */}
           <div>
-            <button className="bg-[#c2c2f7] hover:bg-[#b0b0f5] text-black font-bold text-xs tracking-wider px-4 py-2 uppercase transition-colors">
-              SUBSCRIBE
+            <button style={{ background: '#111111', color: '#ffffff', border: 'none', padding: '8px 14px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', cursor: 'pointer' }}>
+              Subscribe
             </button>
           </div>
         </div>
 
         {/* Expandable Search Input */}
         {isSearchOpen && (
-          <div className="border-t border-gray-100 bg-gray-50 py-3 px-4 transition-all">
-            <div className="max-w-[600px] mx-auto relative">
-              <input
-                type="text"
-                placeholder="Search articles, news or insights..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-10 py-2 text-sm bg-white border border-gray-300 rounded-none outline-none focus:border-black"
-                autoFocus
-              />
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
+          <div style={{ maxWidth: '600px', margin: '16px auto 0 auto', position: 'relative' }}>
+            <Search size={15} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+            <input
+              type="text"
+              placeholder="Search news, tech or insights..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 14px 10px 38px',
+                background: '#f9fafb',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                fontSize: '13px',
+                outline: 'none'
+              }}
+              autoFocus
+            />
           </div>
         )}
-      </header>
+      </div>
 
-      {/* 2. CATEGORY NAVIGATION BAR */}
-      <nav className="border-b border-gray-200 sticky top-0 bg-white z-30">
-        <div className="max-w-[1360px] mx-auto px-4 overflow-x-auto scrollbar-none flex items-center justify-center sm:justify-start gap-6 py-3 whitespace-nowrap">
-          {navCategories.map((cat) => (
+      {/* 2. CATEGORY NAV BAR */}
+      <div style={{ borderBottom: '1px solid #e5e7eb', background: '#ffffff', position: 'sticky', top: 0, zIndex: 20 }}>
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '24px', overflowX: 'auto', paddingBottom: '10px', paddingTop: '10px', whiteSpace: 'nowrap' }}>
+          {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`text-xs font-bold uppercase tracking-wider transition-colors ${
-                selectedCategory === cat ? 'text-black border-b-2 border-black pb-0.5' : 'text-gray-600 hover:text-black'
-              }`}
+              onClick={() => { setSelectedCategory(cat); setVisibleCount(6); }}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '11px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.8px',
+                cursor: 'pointer',
+                paddingBottom: '4px',
+                borderBottom: selectedCategory === cat ? '2px solid #111111' : '2px solid transparent',
+                color: selectedCategory === cat ? '#111111' : '#6b7280'
+              }}
             >
               {cat}
             </button>
           ))}
         </div>
-      </nav>
-
-      {/* 3. LATEST TOPICS PILLS BAR */}
-      <div className="border-b border-gray-100 py-2.5 bg-gray-50/50">
-        <div className="max-w-[1360px] mx-auto px-4 flex items-center gap-3 overflow-x-auto scrollbar-none text-xs">
-          <span className="font-bold text-red-600 whitespace-nowrap">Latest Topics</span>
-          {topicBadges.map((topic, i) => (
-            <span key={i} className="bg-white border border-gray-200 px-3 py-1 rounded-full text-[11px] font-semibold text-gray-700 whitespace-nowrap cursor-pointer hover:border-black">
-              {topic}
-            </span>
-          ))}
-        </div>
       </div>
 
-      {/* 4. MAIN CONTENT GRID (Fast Company Replica) */}
-      <main className="max-w-[1360px] mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      {/* 3. MAIN CONTENT CONTAINER */}
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '24px 20px' }}>
         {loading ? (
-          <div className="py-24 text-center text-gray-400 text-sm font-serif">Loading editorial stories...</div>
+          <div style={{ padding: '60px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>Loading editorial feed...</div>
         ) : filteredMagazines.length === 0 ? (
-          <div className="py-24 text-center text-gray-500 text-sm border border-dashed border-gray-300">
+          <div style={{ padding: '50px', textAlign: 'center', border: '1px dashed #d1d5db', borderRadius: '6px', color: '#6b7280', fontSize: '14px' }}>
             ဆောင်းပါးများ မရှိသေးပါ။
           </div>
         ) : (
           <div>
-            {/* DESKTOP LAYOUT (3 COLUMNS) */}
-            <div className="hidden lg:grid grid-cols-[300px_1fr_320px] gap-8 items-start">
+            {/* DESKTOP 3-COLUMN GRID */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr', gap: '32px', alignItems: 'start' }}>
               
-              {/* LEFT COLUMN: News/Tech Feed */}
-              <div className="flex flex-col gap-6 pr-6 border-r border-gray-200">
+              {/* LEFT COLUMN: LATEST INSIGHTS */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', borderRight: '1px solid #e5e7eb', paddingRight: '24px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
+                  Latest Insights
+                </div>
                 {leftColumnArticles.map((item) => (
-                  <article key={item.id} className="border-b border-gray-200 pb-6 last:border-0">
-                    <span className="text-[11px] font-bold text-gray-500 tracking-wider uppercase block mb-1">
+                  <article key={item.id} style={{ borderBottom: '1px solid #f3f4f6', paddingBottom: '16px' }}>
+                    <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase' }}>
                       {item.category || 'NEWS'}
                     </span>
+                    
+                    {item.source_urls && item.source_urls[0] && (
+                      <div 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ width: '100%', height: '140px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', margin: '8px 0', cursor: 'pointer' }}
+                      >
+                        <img 
+                          src={getValidImageUrl(item.source_urls[0])} 
+                          alt={item.title} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      </div>
+                    )}
+
                     <h3 
                       onClick={() => setDetailArticle(item)}
-                      className="text-lg font-bold font-serif leading-snug hover:underline cursor-pointer mb-2 text-black"
+                      style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '4px 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
                     >
                       {item.title}
                     </h3>
-                    <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                      {item.excerpt || item.body_md?.slice(0, 100)}
+                    <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {item.excerpt || item.body_md?.slice(0, 90)}
                     </p>
                   </article>
                 ))}
@@ -209,70 +227,85 @@ export default function MagazineListPage() {
 
               {/* CENTER COLUMN: FEATURED HERO STORY */}
               {heroArticle && (
-                <div className="flex flex-col px-4 border-r border-gray-200">
-                  <span className="text-[11px] font-bold text-gray-500 tracking-wider uppercase mb-2">
-                    {heroArticle.category || 'NEWS'}
+                <div style={{ display: 'flex', flexDirection: 'column', borderRight: '1px solid #e5e7eb', paddingRight: '24px' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#6b7280', marginBottom: '8px' }}>
+                    FEATURED STORY • {new Date(heroArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
-                  
-                  {/* HERO IMAGE CONTAINER (Controlled Zoom In / Limited Zoom Out) */}
-                  {heroArticle.source_urls && heroArticle.source_urls[0] && (
-                    <div 
-                      onClick={() => setDetailArticle(heroArticle)}
-                      className="w-full h-[380px] bg-gray-100 mb-5 overflow-hidden cursor-pointer group"
-                    >
-                      <img 
-                        src={getValidImageUrl(heroArticle.source_urls[0]) || ''} 
-                        alt={heroArticle.title} 
-                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                      />
-                    </div>
-                  )}
+
+                  <div 
+                    onClick={() => setDetailArticle(heroArticle)}
+                    style={{ width: '100%', height: '320px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', cursor: 'pointer' }}
+                  >
+                    <img 
+                      src={getValidImageUrl(heroArticle.source_urls?.[0])} 
+                      alt={heroArticle.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                    />
+                  </div>
 
                   <h2 
                     onClick={() => setDetailArticle(heroArticle)}
-                    className="text-3xl xl:text-4xl font-serif font-black text-black hover:underline cursor-pointer mb-3 leading-tight"
+                    style={{ fontSize: '26px', fontFamily: 'serif', fontWeight: 900, color: '#111111', margin: '0 0 12px 0', lineHeight: '1.2', cursor: 'pointer' }}
                   >
                     {heroArticle.title}
                   </h2>
-                  <p className="text-sm text-gray-700 leading-relaxed font-serif">
-                    {heroArticle.excerpt || heroArticle.body_md?.slice(0, 220)}
+
+                  <p style={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.6', margin: '0 0 16px 0', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {heroArticle.excerpt || heroArticle.body_md?.slice(0, 200)}
                   </p>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
+                    <Link 
+                      href={`/magazine/${heroArticle.id}`}
+                      style={{ fontSize: '12px', fontWeight: 700, color: '#111111', textDecoration: 'none' }}
+                    >
+                      Read Full Story &rarr;
+                    </Link>
+                    <button 
+                      onClick={() => setDetailArticle(heroArticle)}
+                      style={{ background: 'none', border: 'none', fontSize: '11px', fontWeight: 700, color: '#b8860b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      <BookOpen size={13} /> Quick Preview
+                    </button>
+                  </div>
                 </div>
               )}
 
               {/* RIGHT COLUMN: MOST READ */}
-              <div className="flex flex-col pl-2">
-                <div className="flex items-center justify-between border-b-2 border-black pb-2 mb-6">
-                  <span className="text-xs font-black uppercase tracking-wider">Most Read &darr;</span>
-                  <span className="text-xs text-gray-400 uppercase font-semibold cursor-pointer hover:text-black">For You</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>Most Read</span>
+                  <TrendingUp size={14} />
                 </div>
 
-                <div className="flex flex-col gap-6">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {mostReadArticles.map((item, idx) => (
-                    <div key={item.id} className="flex gap-4 items-start border-b border-gray-100 pb-5 last:border-0">
-                      <span className="text-4xl font-serif font-light text-gray-300 leading-none">
-                        {idx + 1}
+                    <div key={item.id} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', borderBottom: '1px solid #f3f4f6', paddingBottom: '14px' }}>
+                      <span style={{ fontSize: '24px', fontFamily: 'serif', fontWeight: 300, color: '#d1d5db', lineHeight: '1' }}>
+                        0{idx + 1}
                       </span>
-                      <div className="flex-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
-                          {item.category || 'NEWS'}
+                      <div style={{ flex: 1 }}>
+                        <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase' }}>
+                          {item.category || 'INSIGHTS'}
                         </span>
                         <h4 
                           onClick={() => setDetailArticle(item)}
-                          className="text-xs font-bold font-serif leading-snug hover:underline cursor-pointer text-black line-clamp-3"
+                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 0 0', lineHeight: '1.3', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
                         >
                           {item.title}
                         </h4>
                       </div>
-                      {item.source_urls && item.source_urls[0] && (
-                        <div className="w-16 h-16 bg-gray-100 flex-shrink-0 overflow-hidden group cursor-pointer" onClick={() => setDetailArticle(item)}>
-                          <img 
-                            src={getValidImageUrl(item.source_urls[0]) || ''} 
-                            alt="" 
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                          />
-                        </div>
-                      )}
+
+                      <div 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ width: '65px', minWidth: '65px', height: '55px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', cursor: 'pointer' }}
+                      >
+                        <img 
+                          src={getValidImageUrl(item.source_urls?.[0])} 
+                          alt="" 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -280,120 +313,112 @@ export default function MagazineListPage() {
 
             </div>
 
-            {/* MOBILE LAYOUT (Stacked as per mobile screenshot) */}
-            <div className="flex lg:hidden flex-col gap-6">
-              {heroArticle && (
-                <article className="border-b border-gray-200 pb-6">
-                  <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase block mb-1">
-                    {heroArticle.category || 'NEWS'}
-                  </span>
-                  
-                  {/* Hero Image */}
-                  {heroArticle.source_urls && heroArticle.source_urls[0] && (
-                    <div 
-                      onClick={() => setDetailArticle(heroArticle)}
-                      className="w-full h-[240px] bg-gray-100 mb-4 overflow-hidden cursor-pointer"
-                    >
-                      <img 
-                        src={getValidImageUrl(heroArticle.source_urls[0]) || ''} 
-                        alt={heroArticle.title} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
+            {/* SEE MORE STORIES / ADDITIONAL ARTICLES SECTION */}
+            {extraStories.length > 0 && (
+              <div style={{ marginTop: '48px', borderTop: '2px solid #111111', paddingTop: '24px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '24px' }}>
+                  More Stories & Archive
+                </div>
 
-                  <h2 
-                    onClick={() => setDetailArticle(heroArticle)}
-                    className="text-2xl font-serif font-black text-black leading-tight mb-2 active:text-gray-600"
-                  >
-                    {heroArticle.title}
-                  </h2>
-                  <p className="text-xs text-gray-700 leading-relaxed font-serif">
-                    {heroArticle.excerpt || heroArticle.body_md?.slice(0, 150)}
-                  </p>
-                </article>
-              )}
-
-              {/* Mobile Feed Articles */}
-              <div className="flex flex-col gap-6">
-                {mobileExtraArticles.map((item) => (
-                  <article key={item.id} className="border-b border-gray-200 pb-6">
-                    <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase block mb-2">
-                      {item.category || 'WORK LIFE'}
-                    </span>
-                    
-                    <div className="flex gap-4">
-                      {item.source_urls && item.source_urls[0] && (
-                        <div 
-                          onClick={() => setDetailArticle(item)}
-                          className="w-24 h-24 bg-gray-100 flex-shrink-0 overflow-hidden cursor-pointer"
-                        >
-                          <img 
-                            src={getValidImageUrl(item.source_urls[0]) || ''} 
-                            alt="" 
-                            className="w-full h-full object-cover" 
-                          />
-                        </div>
-                      )}
-                      
-                      <div className="flex-1">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+                  {extraStories.map((item) => (
+                    <article key={item.id} style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: '#fafafa' }}>
+                      <div>
+                        {item.source_urls && item.source_urls[0] && (
+                          <div 
+                            onClick={() => setDetailArticle(item)}
+                            style={{ width: '100%', height: '160px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '12px', cursor: 'pointer' }}
+                          >
+                            <img src={getValidImageUrl(item.source_urls[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          </div>
+                        )}
+                        <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                          {item.category || 'MAGAZINE'}
+                        </span>
                         <h3 
                           onClick={() => setDetailArticle(item)}
-                          className="text-sm font-bold font-serif leading-snug text-black mb-1.5 active:text-gray-600"
+                          style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '0 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
                         >
                           {item.title}
                         </h3>
-                        <p className="text-[11px] text-gray-600 leading-normal line-clamp-2">
-                          {item.excerpt || item.body_md?.slice(0, 80)}
+                        <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 12px 0', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          {item.excerpt || item.body_md?.slice(0, 100)}
                         </p>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
 
-          </div>
-        )}
-      </main>
-
-      {/* ARTICLE PREVIEW MODAL */}
-      {detailArticle && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-[680px] p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto shadow-2xl border border-black">
-            <button 
-              onClick={() => setDetailArticle(null)}
-              className="absolute top-4 right-4 p-2 text-gray-500 hover:text-black transition-colors"
-            >
-              <X size={20} />
-            </button>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-red-600 block mb-2">
-              {detailArticle.category || 'MAGAZINE STORY'}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-black text-black mb-4 leading-tight">
-              {detailArticle.title}
-            </h2>
-
-            {detailArticle.source_urls && detailArticle.source_urls[0] && (
-              <div className="w-full h-[250px] sm:h-[320px] bg-gray-100 mb-6 overflow-hidden">
-                <img 
-                  src={getValidImageUrl(detailArticle.source_urls[0]) || ''} 
-                  alt={detailArticle.title}
-                  className="w-full h-full object-cover" 
-                />
+                      <button 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ alignSelf: 'flex-start', background: '#111111', color: '#ffffff', border: 'none', padding: '6px 12px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}
+                      >
+                        Read Story
+                      </button>
+                    </article>
+                  ))}
+                </div>
               </div>
             )}
 
-            <div className="text-xs sm:text-sm text-gray-800 leading-relaxed font-serif whitespace-pre-wrap mb-6">
-              {detailArticle.body_md || detailArticle.excerpt || 'No detailed content available.'}
+            {/* SEE MORE / LOAD MORE BUTTON */}
+            {hasMoreStories && (
+              <div style={{ textAlign: 'center', marginTop: '36px' }}>
+                <button 
+                  onClick={() => setVisibleCount((prev) => prev + 6)}
+                  style={{ background: '#ffffff', border: '1px solid #111111', color: '#111111', padding: '10px 24px', borderRadius: '4px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  See More Stories <ChevronDown size={14} />
+                </button>
+              </div>
+            )}
+
+          </div>
+        )}
+      </div>
+
+      {/* ARTICLE PREVIEW MODAL */}
+      {detailArticle && (
+        <div style={{ 
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', 
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '16px' 
+        }}>
+          <div style={{ 
+            background: '#ffffff', width: '100%', maxWidth: '650px', 
+            borderRadius: '8px', padding: '24px', position: 'relative', 
+            maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.2)' 
+          }}>
+            <button 
+              onClick={() => setDetailArticle(null)}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+            >
+              <X size={20} />
+            </button>
+
+            <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', color: '#b8860b', letterSpacing: '1px', display: 'block', marginBottom: '6px' }}>
+              AXU-II MAGAZINE PREVIEW
+            </span>
+
+            <h2 style={{ fontSize: '22px', fontFamily: 'serif', fontWeight: 800, marginBottom: '12px', lineHeight: '1.25' }}>
+              {detailArticle.title}
+            </h2>
+
+            <div style={{ width: '100%', height: '220px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px' }}>
+              <img src={getValidImageUrl(detailArticle.source_urls?.[0])} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
 
-            <div className="flex gap-4 border-t border-gray-200 pt-4">
+            <div style={{ fontSize: '13px', color: '#374151', lineHeight: '1.7', whiteSpace: 'pre-wrap', marginBottom: '24px' }}>
+              {detailArticle.body_md || detailArticle.excerpt || 'ဆောင်းပါး အပြည့်အစုံ မရှိသေးပါ။'}
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px' }}>
               <Link 
                 href={`/magazine/${detailArticle.id}`}
-                className="w-full bg-black text-white text-center py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
+                style={{ 
+                  flex: 1, background: '#111111', color: '#ffffff', textAlign: 'center', 
+                  padding: '10px', borderRadius: '4px', fontSize: '12px', fontWeight: 700, 
+                  textDecoration: 'none', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' 
+                }}
               >
-                <BookOpen size={14} /> Read Full Article
+                <BookOpen size={14} /> Open Full Story Page
               </Link>
             </div>
           </div>
