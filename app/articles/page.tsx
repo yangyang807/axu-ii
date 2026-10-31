@@ -78,49 +78,49 @@ export default function BusinessAIBookKitPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans py-8 px-4 sm:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#1a1a1a] font-sans py-8 px-4 sm:px-8">
+      <div className="max-w-[1280px] mx-auto space-y-8">
         
         {/* Header Section */}
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold tracking-wider uppercase">
-            <Sparkles size={13} /> Admin Published Knowledge Assets
+        <div className="space-y-2">
+          <div className="text-[11px] text-[#c9b17b] font-bold tracking-[1.5px] uppercase">
+            ADMIN PUBLISHED KNOWLEDGE ASSETS
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#111111]">
             Business & AI Book Kit
           </h1>
 
-          <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed">
+          <p className="text-[#666666] text-sm max-w-[720px] leading-relaxed">
             Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
           </p>
         </div>
 
         {/* Search & Filter Controls */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-2 border-b border-[#e5e7eb]">
           
           {/* Search Input */}
-          <div className="relative w-full md:w-80">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <div className="relative w-full max-w-[380px]">
+            <Search size={15} className="absolute left-[14px] top-1/2 -translate-y-1/2 text-[#9ca3af]" />
             <input
               type="text"
-              placeholder="Search title, author, or keyword..."
+              placeholder="Search book title, author or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 transition-all shadow-sm"
+              className="w-full py-2.5 pl-[38px] pr-4 bg-white border border-[#e5e7eb] rounded-md text-[13px] text-[#111111] placeholder:text-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#111111] shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
             />
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none whitespace-nowrap">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 border ${
+                className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all shrink-0 cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                    ? 'bg-[#171a18] text-white border border-[#111111]'
+                    : 'bg-white text-[#4b5563] border border-[#e5e7eb] hover:bg-gray-50'
                 }`}
               >
                 {cat}
@@ -131,91 +131,90 @@ export default function BusinessAIBookKitPage() {
 
         {/* Dynamic Content View */}
         {loading ? (
-          <div className="py-20 text-center text-slate-500 text-sm">
+          <div className="py-10 text-center text-[#6b7280] text-sm">
             Loading published books from database...
           </div>
         ) : filteredBooks.length === 0 ? (
-          <div className="py-16 text-center bg-white border border-dashed border-slate-300 rounded-xl text-slate-500 text-sm">
-            No books found. Publish a book from the Admin Console using the <span className="font-semibold text-slate-700">Business & AI Book Kit</span> category.
+          <div className="py-10 text-center bg-white border border-[#e5e7eb] rounded-lg text-[#6b7280] text-sm">
+            No books found. Publish a book from the Admin Console using the <strong className="text-[#111111]">Business & AI Book Kit</strong> category.
           </div>
         ) : (
-          /* Professional Book Grid (Card Design with Proper Image Ratio) */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          /* Books Grid View */
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                className="bg-white border border-slate-200/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row overflow-hidden group"
+                className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden shadow-sm flex flex-col justify-between"
               >
-                {/* Fixed Sized Compact Book Cover Container */}
-                <div className="sm:w-44 w-full shrink-0 bg-slate-900 relative aspect-[3/4] sm:aspect-auto overflow-hidden flex items-center justify-center p-3">
-                  <img 
-                    src={book.coverUrl} 
-                    alt={book.title}
-                    className="w-full h-full object-contain rounded shadow-md group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                <div>
+                  {/* Book Cover Image Thumbnail */}
+                  <div className="w-full h-64 sm:h-72 relative bg-[#171a18] overflow-hidden flex items-center justify-center">
+                    <img 
+                      src={book.coverUrl} 
+                      alt={book.title}
+                      className="w-full h-full object-cover opacity-95 block"
+                    />
+                  </div>
 
-                {/* Content Section */}
-                <div className="p-5 flex flex-col justify-between flex-1 space-y-4">
-                  <div className="space-y-2">
-                    {/* Category & Read Time */}
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-amber-600 uppercase tracking-wider text-[11px]">
+                  {/* Book Details */}
+                  <div className="p-5 sm:p-6">
+                    {/* Category & Meta */}
+                    <div className="flex justify-between items-center mb-2.5 flex-wrap gap-2">
+                      <span className="text-[11px] font-bold text-[#c9b17b] uppercase tracking-[0.5px]">
                         {book.category}
                       </span>
-                      <span className="flex items-center gap-1 text-slate-400">
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
                         <Clock size={12} /> {book.readTime}
-                      </span>
+                      </div>
                     </div>
 
                     {/* Title & Subtitle */}
-                    <div>
-                      <h3 className="text-base font-bold font-serif text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1">
-                        {book.title}
-                      </h3>
-                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
-                        {book.subtitle}
-                      </p>
-                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-[#111111] mb-1.5 font-serif line-clamp-2 break-words">
+                      {book.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mb-4 line-clamp-2 break-words">
+                      {book.subtitle}
+                    </p>
 
-                    {/* Author & Date */}
-                    <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1 border-t border-slate-100">
-                      <span className="flex items-center gap-1 text-slate-700">
-                        <User size={12} className="text-amber-600" /> {book.author}
-                      </span>
-                      <span className="text-slate-400 text-[11px]">{book.publishedDate}</span>
+                    {/* Author Tag & Date */}
+                    <div className="flex items-center justify-between text-xs text-gray-600 mb-4 font-medium border-t border-gray-100 pt-3">
+                      <div className="flex items-center gap-1.5">
+                        <User size={12} className="text-[#c9b17b]" /> By {book.author}
+                      </div>
+                      <span className="text-gray-400">{book.publishedDate}</span>
                     </div>
 
                     {/* Summary */}
-                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-2 line-clamp-4 break-words">
                       {book.summary}
                     </p>
                   </div>
+                </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 pt-3 border-t border-slate-100 mt-auto">
-                    <button className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                      <BookOpen size={14} /> Read Chapter
-                    </button>
+                {/* Bottom Action Buttons */}
+                <div className="p-5 sm:p-6 pt-0 border-t border-gray-100 flex gap-3 mt-auto">
+                  <button className="flex-1 bg-[#171a18] hover:bg-black text-white border-none py-2.5 px-3.5 rounded-md text-[13px] font-semibold cursor-pointer flex items-center justify-center gap-1.5 transition-colors">
+                    <BookOpen size={14} /> Read Chapter
+                  </button>
 
-                    <button 
-                      onClick={() => {
-                        if (book.downloadUrl) {
-                          window.open(book.downloadUrl, '_blank');
-                        } else {
-                          alert('PDF link not available for this book yet.');
-                        }
-                      }}
-                      disabled={!book.downloadUrl}
-                      className={`py-2 px-3 rounded-md text-xs font-medium border flex items-center gap-1.5 transition-colors ${
-                        book.downloadUrl 
-                          ? 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300' 
-                          : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed'
-                      }`}
-                    >
-                      <Download size={14} /> PDF
-                    </button>
-                  </div>
+                  {/* PDF Download Button */}
+                  <button 
+                    onClick={() => {
+                      if (book.downloadUrl) {
+                        window.open(book.downloadUrl, '_blank');
+                      } else {
+                        alert('PDF link not available for this book yet.');
+                      }
+                    }}
+                    disabled={!book.downloadUrl}
+                    className={`bg-white border border-[#e5e7eb] py-2.5 px-3.5 rounded-md text-[13px] font-medium flex items-center gap-1.5 transition-colors ${
+                      book.downloadUrl 
+                        ? 'text-[#374151] hover:bg-gray-50 cursor-pointer' 
+                        : 'text-[#9ca3af] cursor-not-allowed bg-gray-50'
+                    }`}
+                  >
+                    <Download size={14} /> PDF
+                  </button>
                 </div>
 
               </div>
