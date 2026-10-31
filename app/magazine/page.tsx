@@ -83,7 +83,7 @@ export default function MagazineListPage() {
     <div style={{ background: '#ffffff', color: '#111111', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       
       {/* PROFESSIONAL CONTAINER LOCK WRAPPER */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 16px sm:padding: 40px 32px' }}>
+      <div className="max-w-[1200px] mx-auto py-8 px-4 sm:py-10 sm:px-8">
         
         {/* TOP BRAND HEADER */}
         <div style={{ borderBottom: '2px solid #111111', paddingBottom: '20px', marginBottom: '32px', textAlign: 'center' }}>
@@ -96,7 +96,7 @@ export default function MagazineListPage() {
         </div>
 
         {/* SEARCH & FILTERS BAR */}
-        <div style={{ display: 'flex', flexDirection: 'column', md: { flexDirection: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: '16px', marginBottom: '36px' }}>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-9">
           <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
             <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
             <input
@@ -117,7 +117,7 @@ export default function MagazineListPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', width: '100%', md: { width: 'auto' }, whiteSpace: 'nowrap' }}>
+          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', width: '100%', whiteSpace: 'nowrap' }} className="md:w-auto">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -132,8 +132,7 @@ export default function MagazineListPage() {
                   border: selectedCategory === cat ? '1px solid #111111' : '1px solid #e5e7eb',
                   background: selectedCategory === cat ? '#111111' : '#ffffff',
                   color: selectedCategory === cat ? '#ffffff' : '#374151',
-                  flexShrink: 0,
-                  transition: 'all 0.2s ease'
+                  flexShrink: 0
                 }}
               >
                 {cat}
@@ -150,7 +149,7 @@ export default function MagazineListPage() {
             ဆောင်းပါးများ မရှိသေးပါ။
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', lg: { gridTemplateColumns: '2fr 1fr' }, gap: '40px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
             
             {/* MAIN COLUMN (Featured Hero + List) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
@@ -185,7 +184,7 @@ export default function MagazineListPage() {
                       </h2>
                     </Link>
 
-                    {/* Strict Line Clamp to keep it smart */}
+                    {/* Strict Line Clamp */}
                     <p style={{ 
                       fontSize: '15px', 
                       color: '#4b5563', 
@@ -218,7 +217,7 @@ export default function MagazineListPage() {
                 );
               })()}
 
-              {/* REMAINING ARTICLES (Responsive Grid/List) */}
+              {/* REMAINING ARTICLES */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {remainingArticles.map((item) => {
                   const rawUrl = item.source_urls && item.source_urls.length > 0 ? item.source_urls[0] : null;
@@ -290,7 +289,7 @@ export default function MagazineListPage() {
 
             </div>
 
-            {/* SIDEBAR WIDGET (Editorial Standard) */}
+            {/* SIDEBAR WIDGET */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '24px' }}>
                 <h4 style={{ fontSize: '12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#111', marginBottom: '12px' }}>
