@@ -111,7 +111,7 @@ export default function MagazineListPage() {
             <span style={{ fontSize: '10px', fontWeight: 900, color: '#b8860b', letterSpacing: '1.5px', textTransform: 'uppercase', display: 'block', marginBottom: '2px' }}>
               AXU-II KNOWLEDGE OS
             </span>
-            <h1 style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'serif', letterSpacing: '-0.5px', margin: 0, textTransform: 'uppercase' }}>
+            <h1 style={{ fontSize: '18px', fontWeight: 900, fontFamily: 'serif', letterSpacing: '-0.5px', margin: 0, textTransform: 'uppercase' }}>
               AXU-II DAILY MAGAZINE
             </h1>
           </div>
@@ -190,7 +190,13 @@ export default function MagazineListPage() {
                 gap: 24px;
               }
               .hero-img {
-                height: 260px;
+                height: 240px;
+              }
+              .clamped-text {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
               }
               @media (min-width: 1024px) {
                 .magazine-grid {
@@ -233,8 +239,8 @@ export default function MagazineListPage() {
                     {heroArticle.title}
                   </h2>
 
-                  <p style={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.6', margin: '0 0 16px 0' }}>
-                    {heroArticle.excerpt || heroArticle.body_md?.slice(0, 200)}
+                  <p className="clamped-text" style={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.6', margin: '0 0 16px 0' }}>
+                    {heroArticle.excerpt || heroArticle.body_md}
                   </p>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
@@ -284,8 +290,8 @@ export default function MagazineListPage() {
                     >
                       {item.title}
                     </h3>
-                    <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {item.excerpt || item.body_md?.slice(0, 90)}
+                    <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, WebkitLineClamp: 2 }}>
+                      {item.excerpt || item.body_md}
                     </p>
                   </article>
                 ))}
@@ -310,7 +316,8 @@ export default function MagazineListPage() {
                         </span>
                         <h4 
                           onClick={() => setDetailArticle(item)}
-                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 0 0', lineHeight: '1.3', cursor: 'pointer', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                          className="clamped-text"
+                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 0 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
                         >
                           {item.title}
                         </h4>
@@ -357,12 +364,13 @@ export default function MagazineListPage() {
                         </span>
                         <h3 
                           onClick={() => setDetailArticle(item)}
-                          style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '0 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
+                          className="clamped-text"
+                          style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '0 0 8px 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
                         >
                           {item.title}
                         </h3>
-                        <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 12px 0', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                          {item.excerpt || item.body_md?.slice(0, 100)}
+                        <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 12px 0' }}>
+                          {item.excerpt || item.body_md}
                         </p>
                       </div>
 
