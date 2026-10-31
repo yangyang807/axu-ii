@@ -184,7 +184,7 @@ export default function MagazineListPage() {
         ) : (
           <div>
             <style dangerouslySetInnerHTML={{ __html: `
-              .magazine-main-grid {
+              .magazine-3col-grid {
                 display: flex;
                 flex-direction: column;
                 gap: 28px;
@@ -199,23 +199,23 @@ export default function MagazineListPage() {
                 overflow: hidden;
               }
               @media (min-width: 1024px) {
-                .magazine-main-grid {
+                .magazine-3col-grid {
                   display: grid;
-                  grid-template-columns: 1fr 1.7fr;
-                  gap: 36px;
+                  grid-template-columns: 1fr 1.6fr 1.1fr;
+                  gap: 28px;
                   align-items: start;
                 }
                 .hero-img {
-                  height: 360px;
+                  height: 340px;
                 }
               }
             `}} />
 
-            {/* TOP 2-COLUMN SECTION: LATEST INSIGHTS & FEATURED HERO */}
-            <div className="magazine-main-grid">
+            {/* DESKTOP 3-COLUMN LAYOUT & MOBILE STACK */}
+            <div className="magazine-3col-grid">
               
               {/* 1. LEFT COLUMN: LATEST INSIGHTS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-8">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
                 <div style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
                   Latest Insights
                 </div>
@@ -258,9 +258,9 @@ export default function MagazineListPage() {
                 ))}
               </div>
 
-              {/* 2. RIGHT COLUMN: FEATURED HERO STORY */}
+              {/* 2. CENTER COLUMN: FEATURED HERO STORY (သတင်းခေါင်းကြီး) */}
               {heroArticle && (
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
                   <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#6b7280', marginBottom: '8px' }}>
                     FEATURED STORY • {new Date(heroArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
@@ -305,53 +305,53 @@ export default function MagazineListPage() {
                 </div>
               )}
 
-            </div>
+              {/* 3. RIGHT COLUMN: MOST READ */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>Most Read</span>
+                  <TrendingUp size={14} />
+                </div>
 
-            {/* 3. MOST READ SECTION (PLACED FULL WIDTH AT THE BOTTOM) */}
-            <div style={{ marginTop: '48px', borderTop: '2px solid #111111', paddingTop: '24px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <span style={{ fontSize: '12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>Most Read Stories</span>
-                <TrendingUp size={16} />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-                {mostReadArticles.map((item, idx) => (
-                  <div key={item.id} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', border: '1px solid #e5e7eb', padding: '16px', borderRadius: '6px', background: '#fafafa' }}>
-                    <span style={{ fontSize: '28px', fontFamily: 'serif', fontWeight: 300, color: '#9ca3af', lineHeight: '1' }}>
-                      0{idx + 1}
-                    </span>
-                    <div style={{ flex: 1 }}>
-                      <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                        {item.category || 'INSIGHTS'}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {mostReadArticles.map((item, idx) => (
+                    <div key={item.id} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', borderBottom: '1px solid #f3f4f6', paddingBottom: '14px' }}>
+                      <span style={{ fontSize: '24px', fontFamily: 'serif', fontWeight: 300, color: '#d1d5db', lineHeight: '1' }}>
+                        0{idx + 1}
                       </span>
-                      <h4 
-                        onClick={() => setDetailArticle(item)}
-                        className="clamped-text"
-                        style={{ fontSize: '14px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '0 0 6px 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
-                      >
-                        {item.title}
-                      </h4>
-                      <Link 
-                        href={`/magazine/${item.id}`}
-                        style={{ fontSize: '11px', fontWeight: 800, color: '#111111', textDecoration: 'none', display: 'inline-block' }}
-                      >
-                        ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
-                      </Link>
-                    </div>
+                      <div style={{ flex: 1 }}>
+                        <span style={{ fontSize: '9px', fontWeight: 800, color: '#6b7280', textTransform: 'uppercase' }}>
+                          {item.category || 'INSIGHTS'}
+                        </span>
+                        <h4 
+                          onClick={() => setDetailArticle(item)}
+                          className="clamped-text"
+                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 4px 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
+                        >
+                          {item.title}
+                        </h4>
+                        <Link 
+                          href={`/magazine/${item.id}`}
+                          style={{ fontSize: '10px', fontWeight: 800, color: '#111111', textDecoration: 'none' }}
+                        >
+                          ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
+                        </Link>
+                      </div>
 
-                    <div 
-                      onClick={() => setDetailArticle(item)}
-                      style={{ width: '70px', minWidth: '70px', height: '60px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', cursor: 'pointer' }}
-                    >
-                      <img 
-                        src={getValidImageUrl(item.source_urls?.[0])} 
-                        alt="" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                      />
+                      <div 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ width: '65px', minWidth: '65px', height: '55px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', cursor: 'pointer' }}
+                      >
+                        <img 
+                          src={getValidImageUrl(item.source_urls?.[0])} 
+                          alt="" 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+
             </div>
 
             {/* SEE MORE STORIES / ADDITIONAL ARTICLES SECTION */}
