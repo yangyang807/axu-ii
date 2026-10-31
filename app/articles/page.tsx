@@ -7,7 +7,9 @@ import {
   Search, 
   Download, 
   User, 
-  Clock 
+  Clock, 
+  X,
+  Info
 } from 'lucide-react';
 
 interface BookItem {
@@ -21,6 +23,7 @@ interface BookItem {
   publishedDate: string;
   summary: string;
   downloadUrl?: string;
+  fullContent?: string;
 }
 
 export default function BusinessAIBookKitPage() {
@@ -28,6 +31,9 @@ export default function BusinessAIBookKitPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Detail Modal State for Reading Chapter / Summary
+  const [detailBook, setDetailBook] = useState<BookItem | null>(null);
 
   const supabase = createClient();
 
@@ -53,7 +59,8 @@ export default function BusinessAIBookKitPage() {
             readTime: '30 mins read',
             publishedDate: new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
             summary: item.excerpt || 'No summary provided.',
-            downloadUrl: item.pdf_url || item.file_url || (item.source_urls && item.source_urls[1] ? item.source_urls[1] : undefined)
+            downloadUrl: item.pdf_url || item.file_url || (item.source_urls && item.source_urls[1] ? item.source_urls[1] : undefined),
+            fullContent: item.body_md || item.excerpt || 'Full chapter content will be updated soon.'
           }));
           setBooks(formattedBooks);
         }
@@ -77,25 +84,35 @@ export default function BusinessAIBookKitPage() {
   });
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', fontFamily: 'sans-serif' }} className="py-6 px-4 sm:py-10 sm:px-6">
+    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', padding: '32px 40px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
         
-        {/* TOP HEADER SECTION */}
-        <div style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '20px', marginBottom: '28px' }}>
-          <div style={{ fontSize: '11px', color: '#b8860b', letterSpacing: '1.5px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
-            BUILD WITH EVIDENCE
-          </div>
-          <h1 className="text-2xl sm:text-3xl" style={{ fontFamily: 'serif', margin: '0 0 8px 0', color: '#111111', fontWeight: 700 }}>
-            Business & AI Book Kit
-          </h1>
-          <p style={{ color: '#555555', fontSize: '14px', margin: 0, lineHeight: '1.5' }}>
-            Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
-          </p>
+        {/* Top Header Tag */}
+        <div style={{ fontSize: '11px', color: '#b8860b', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
+          BUILD WITH EVIDENCE
         </div>
 
-        {/* SEARCH & FILTERS BAR */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div style={{ position: 'relative', width: '100%', maxWidth: '340px' }}>
+        {/* Title */}
+        <h1 style={{ fontSize: '32px', fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
+          Business & AI Book Kit
+        </h1>
+
+        {/* Subtitle Description */}
+        <p style={{ color: '#666666', fontSize: '14px', maxWidth: '720px', lineHeight: 1.6, marginBottom: '28px' }}>
+          Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
+        </p>
+
+        {/* Search and Filters Bar */}
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          gap: '16px', 
+          marginBottom: '32px'
+        }}>
+          {/* Search Bar */}
+          <div style={{ position: 'relative', width: '380px' }}>
             <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
             <input
               type="text"
@@ -106,16 +123,18 @@ export default function BusinessAIBookKitPage() {
                 width: '100%',
                 padding: '10px 14px 10px 38px',
                 background: '#ffffff',
-                border: '1px solid #d1d5db',
+                border: '1px solid #e5e7eb',
                 borderRadius: '4px',
                 color: '#111111',
                 fontSize: '13px',
-                outline: 'none'
+                outline: 'none',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
               }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', whiteSpace: 'nowrap' }}>
+          {/* Filters Buttons */}
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -126,10 +145,10 @@ export default function BusinessAIBookKitPage() {
                   fontSize: '12px',
                   fontWeight: 500,
                   cursor: 'pointer',
-                  border: selectedCategory === cat ? '1px solid #111111' : '1px solid #d1d5db',
+                  border: selectedCategory === cat ? '1px solid #111111' : '1px solid #e5e7eb',
                   background: selectedCategory === cat ? '#171a18' : '#ffffff',
                   color: selectedCategory === cat ? '#ffffff' : '#4b5563',
-                  flexShrink: 0
+                  transition: 'all 0.15s ease'
                 }}
               >
                 {cat}
@@ -138,12 +157,12 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* BOOK LIST */}
+        {/* Book List View */}
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#777777', fontSize: '14px' }}>Loading published books...</div>
+          <div style={{ padding: '60px', textAlign: 'center', color: '#6b7280' }}>Loading published books...</div>
         ) : filteredBooks.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '50px 0', border: '1px dashed #d1d5db', borderRadius: '6px', color: '#777777', fontSize: '14px' }}>
-            No books found.
+          <div style={{ padding: '60px', textAlign: 'center', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#6b7280' }}>
+            No books found. Publish items via the <strong>Admin Console</strong>.
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -161,8 +180,12 @@ export default function BusinessAIBookKitPage() {
                   alignItems: 'stretch'
                 }}
               >
-                {/* Cover Image */}
-                <div className="w-[140px] sm:w-[220px] min-w-[140px] sm:min-w-[220px]" style={{ backgroundColor: '#f3f4f6', overflow: 'hidden' }}>
+                {/* Left Column: Cover Image */}
+                <div 
+                  onClick={() => setDetailBook(book)}
+                  className="w-[140px] sm:w-[220px] min-w-[140px] sm:min-w-[220px]" 
+                  style={{ backgroundColor: '#f3f4f6', overflow: 'hidden', cursor: 'pointer' }}
+                >
                   <img 
                     src={book.coverUrl} 
                     alt={book.title} 
@@ -173,7 +196,7 @@ export default function BusinessAIBookKitPage() {
                   />
                 </div>
 
-                {/* Content & Action Buttons */}
+                {/* Right Column: Content & Actions */}
                 <div className="p-4 sm:p-6" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
                   <div>
                     {/* Category & Read Time */}
@@ -187,11 +210,15 @@ export default function BusinessAIBookKitPage() {
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-lg sm:text-2xl" style={{ fontFamily: 'serif', color: '#111111', fontWeight: 700, margin: '0 0 6px 0', lineHeight: '1.2' }}>
+                    <h2 
+                      onClick={() => setDetailBook(book)}
+                      className="text-lg sm:text-2xl" 
+                      style={{ fontFamily: 'serif', color: '#111111', fontWeight: 700, margin: '0 0 6px 0', lineHeight: '1.2', cursor: 'pointer' }}
+                    >
                       {book.title}
                     </h2>
 
-                    {/* Summary / Description */}
+                    {/* Summary */}
                     <p className="text-xs sm:text-sm" style={{ color: '#4b5563', lineHeight: '1.5', margin: '0 0 12px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {book.summary}
                     </p>
@@ -202,23 +229,26 @@ export default function BusinessAIBookKitPage() {
                     </div>
                   </div>
 
-                  {/* Bottom Action Buttons (Read Chapter & PDF) */}
+                  {/* Actions: Read Chapter & PDF */}
                   <div style={{ paddingTop: '12px', borderTop: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button style={{
-                      flex: 1,
-                      background: '#171a18',
-                      color: '#ffffff',
-                      border: 'none',
-                      padding: '10px 18px',
-                      borderRadius: '4px',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '6px'
-                    }}>
+                    <button 
+                      onClick={() => setDetailBook(book)}
+                      style={{
+                        flex: 1,
+                        background: '#171a18',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '10px 18px',
+                        borderRadius: '4px',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
                       <BookOpen size={13} /> Read Chapter
                     </button>
 
@@ -252,6 +282,83 @@ export default function BusinessAIBookKitPage() {
 
               </article>
             ))}
+          </div>
+        )}
+
+        {/* Book Chapter / Detail Modal */}
+        {detailBook && (
+          <div style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            width: '100vw', 
+            height: '100vh', 
+            background: 'rgba(0,0,0,0.6)', 
+            backdropFilter: 'blur(4px)',
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            zIndex: 100 
+          }}>
+            <div style={{ 
+              background: '#ffffff', 
+              width: '100%', 
+              maxWidth: '640px', 
+              borderRadius: '12px', 
+              padding: '32px', 
+              boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+              position: 'relative',
+              maxHeight: '85vh',
+              overflowY: 'auto'
+            }}>
+              <button 
+                onClick={() => setDetailBook(null)}
+                style={{ position: 'absolute', top: '20px', right: '20px', background: 'transparent', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+              >
+                <X size={20} />
+              </button>
+
+              <div style={{ fontSize: '11px', color: '#b8860b', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
+                {detailBook.category} • {detailBook.readTime}
+              </div>
+
+              <h2 style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
+                {detailBook.title}
+              </h2>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#6b7280', marginBottom: '20px' }}>
+                <User size={13} style={{ color: '#b8860b' }} /> By {detailBook.author} • {detailBook.publishedDate}
+              </div>
+
+              <div style={{ fontSize: '14px', color: '#374151', lineHeight: 1.8, whiteSpace: 'pre-wrap', marginBottom: '24px' }}>
+                {detailBook.fullContent}
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                {detailBook.downloadUrl && (
+                  <button 
+                    onClick={() => window.open(detailBook.downloadUrl, '_blank')}
+                    style={{
+                      flex: 1,
+                      background: '#171a18',
+                      color: '#ffffff',
+                      border: 'none',
+                      padding: '12px',
+                      borderRadius: '6px',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    <Download size={15} /> Download PDF Version
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
