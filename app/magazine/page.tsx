@@ -201,7 +201,7 @@ export default function MagazineListPage() {
               @media (min-width: 1024px) {
                 .magazine-grid {
                   display: grid;
-                  grid-template-columns: 1fr 1.6fr 1fr;
+                  grid-template-columns: 1fr 1.8fr 1fr;
                   gap: 28px;
                   align-items: start;
                 }
@@ -240,13 +240,20 @@ export default function MagazineListPage() {
 
                     <h3 
                       onClick={() => setDetailArticle(item)}
-                      style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '4px 0 8px 0', lineHeight: '1.3', cursor: 'pointer' }}
+                      style={{ fontSize: '15px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '4px 0 6px 0', lineHeight: '1.3', cursor: 'pointer' }}
                     >
                       {item.title}
                     </h3>
-                    <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: 0, WebkitLineClamp: 2 }}>
+                    <p className="clamped-text" style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 8px 0', WebkitLineClamp: 2 }}>
                       {item.excerpt || item.body_md}
                     </p>
+
+                    <Link 
+                      href={`/magazine/${item.id}`}
+                      style={{ fontSize: '11px', fontWeight: 800, color: '#111111', textDecoration: 'none', display: 'inline-block' }}
+                    >
+                      ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
+                    </Link>
                   </article>
                 ))}
               </div>
@@ -284,9 +291,9 @@ export default function MagazineListPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #f3f4f6', paddingTop: '12px' }}>
                     <Link 
                       href={`/magazine/${heroArticle.id}`}
-                      style={{ fontSize: '12px', fontWeight: 700, color: '#111111', textDecoration: 'none' }}
+                      style={{ fontSize: '12px', fontWeight: 800, color: '#111111', textDecoration: 'none' }}
                     >
-                      Read Full Story &rarr;
+                      ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
                     </Link>
                     <button 
                       onClick={() => setDetailArticle(heroArticle)}
@@ -318,10 +325,16 @@ export default function MagazineListPage() {
                         <h4 
                           onClick={() => setDetailArticle(item)}
                           className="clamped-text"
-                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 0 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
+                          style={{ fontSize: '13px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '2px 0 4px 0', lineHeight: '1.3', cursor: 'pointer', WebkitLineClamp: 2 }}
                         >
                           {item.title}
                         </h4>
+                        <Link 
+                          href={`/magazine/${item.id}`}
+                          style={{ fontSize: '10px', fontWeight: 800, color: '#111111', textDecoration: 'none' }}
+                        >
+                          ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
+                        </Link>
                       </div>
 
                       <div 
@@ -375,12 +388,20 @@ export default function MagazineListPage() {
                         </p>
                       </div>
 
-                      <button 
-                        onClick={() => setDetailArticle(item)}
-                        style={{ alignSelf: 'flex-start', background: '#111111', color: '#ffffff', border: 'none', padding: '6px 12px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}
-                      >
-                        Read Story
-                      </button>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Link 
+                          href={`/magazine/${item.id}`}
+                          style={{ fontSize: '11px', fontWeight: 800, color: '#111111', textDecoration: 'none' }}
+                        >
+                          ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန် &rarr;
+                        </Link>
+                        <button 
+                          onClick={() => setDetailArticle(item)}
+                          style={{ background: '#111111', color: '#ffffff', border: 'none', padding: '6px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}
+                        >
+                          Preview
+                        </button>
+                      </div>
                     </article>
                   ))}
                 </div>
@@ -447,7 +468,7 @@ export default function MagazineListPage() {
                   textDecoration: 'none', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' 
                 }}
               >
-                <BookOpen size={14} /> Open Full Story Page
+                <BookOpen size={14} /> ဆောင်းပါး အပြည့်အစုံ ဖတ်ရန်
               </Link>
             </div>
           </div>
