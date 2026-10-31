@@ -8,16 +8,16 @@ const groups = [
     title: 'Workspace',
     items: [
       { href: '/', label: 'Command Center', icon: LayoutDashboard },
-      { href: '/magazine', label: 'Daily Magazine', icon: Newspaper },
-      { href: '/library', label: 'Source Library', icon: LibraryBig },
+      { href: '/magazine', label: 'Daily AI Briefing', icon: Newspaper },
+      { href: '/library', label: 'Quality Source Library', icon: LibraryBig },
       { href: '/insights', label: 'AXU-II Ai Store', icon: BrainCircuit },
-      { href: '/notes', label: 'Prompt Packs', icon: NotebookPen },
+      { href: '/notes', label: 'Smart Prompt', icon: NotebookPen },
     ],
   },
   {
     title: 'Manage',
     items: [
-      { href: '/articles', label: 'Business & AI Book Kit', icon: FileText },
+      { href: '/articles', label: 'AI Tool Finder', icon: FileText },
       { href: '/admin', label: 'Member Login', icon: ShieldCheck },
     ],
   },

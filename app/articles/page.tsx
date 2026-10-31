@@ -1,143 +1,84 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase';
+import React, { useState } from 'react';
 import { 
-  BookOpen, 
   Search, 
-  Download, 
-  User, 
-  Clock, 
+  ExternalLink, 
   X,
-  Info
+  CheckCircle,
+  XCircle,
+  DollarSign,
+  UserCheck
 } from 'lucide-react';
+import { allAiTools, AIToolItem } from '@/lib/aiTools';
 
-interface BookItem {
-  id: string;
-  title: string;
-  subtitle?: string;
-  author?: string;
-  category: string;
-  coverUrl: string;
-  readTime: string;
-  publishedDate: string;
-  summary: string;
-  downloadUrl?: string;
-  fullContent?: string;
-}
-
-export default function BusinessAIBookKitPage() {
-  const [books, setBooks] = useState<BookItem[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function AIToolFinderPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  
-  // Detail Modal State
-  const [detailBook, setDetailBook] = useState<BookItem | null>(null);
+  const [detailTool, setDetailTool] = useState<AIToolItem | null>(null);
 
-  const supabase = createClient();
+  const categories = ['All', 'LLMs & Chatbots', 'Productivity', 'Development', 'Design & Media'];
 
-  useEffect(() => {
-    async function fetchBooks() {
-      try {
-        const { data, error } = await supabase
-          .from('articles')
-          .select('*')
-          .eq('category', 'book')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        if (data) {
-          const formattedBooks: BookItem[] = data.map((item) => ({
-            id: item.id,
-            title: item.title,
-            subtitle: item.excerpt || 'Business & AI Execution Guide',
-            author: 'Yang Karg',
-            category: 'Business Strategy',
-            coverUrl: item.source_urls && item.source_urls[0] ? item.source_urls[0] : 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop',
-            readTime: '30 mins read',
-            publishedDate: new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-            summary: item.excerpt || 'No summary provided.',
-            downloadUrl: item.pdf_url || item.file_url || (item.source_urls && item.source_urls[1] ? item.source_urls[1] : undefined),
-            fullContent: item.body_md || item.excerpt || 'Full chapter content will be updated soon.'
-          }));
-          setBooks(formattedBooks);
-        }
-      } catch (err) {
-        console.error('Error fetching books:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchBooks();
-  }, [supabase]);
-
-  const categories = ['All', 'Business Strategy', 'AI & Automation', 'First-Principles', 'Monetization OS'];
-
-  const filteredBooks = books.filter((book) => {
-    const matchesCategory = selectedCategory === 'All' || book.category === selectedCategory;
-    const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (book.subtitle && book.subtitle.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredTools = allAiTools.filter((tool) => {
+    const matchesCategory = selectedCategory === 'All' || tool.category.toLowerCase() === selectedCategory.toLowerCase();
+    const matchesSearch = tool.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          tool.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          tool.recommendFor.en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          tool.recommendFor.my.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const featuredBook = filteredBooks.length > 0 ? filteredBooks[0] : null;
-  const remainingBooks = filteredBooks.length > 1 ? filteredBooks.slice(1) : [];
-
   return (
-    <div style={{ background: '#ffffff', color: '#111111', minHeight: '100vh', padding: '24px 16px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ background: '#f8fafc', color: '#0f172a', minHeight: '100vh', padding: '24px 16px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
-        {/* TOP BRAND HEADER */}
-        <div style={{ borderBottom: '2px solid #111111', paddingBottom: '16px', marginBottom: '24px', textAlign: 'center' }}>
-          <div style={{ fontSize: '10px', color: '#666', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '4px' }}>
-            BUILD WITH EVIDENCE
+        {/* HEADER */}
+        <div style={{ borderBottom: '2px solid #0f172a', paddingBottom: '16px', marginBottom: '24px', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: '#64748b', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '4px', fontWeight: 700 }}>
+            QUALITY SOURCE LIBRARY (100 AI MATRIX)
           </div>
-          <h1 style={{ fontSize: '32px', fontWeight: 900, fontFamily: 'serif', letterSpacing: '-1px', margin: 0, textTransform: 'uppercase' }}>
-            Business & AI Book Kit
+          <h1 style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.5px', margin: 0, textTransform: 'uppercase' }}>
+            AI Tool Finder & Comparison
           </h1>
         </div>
 
-        {/* SEARCH & FILTERS BAR */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px' }}>
-          <div style={{ position: 'relative', width: '100%' }}>
-            <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+        {/* SEARCH & FILTER BAR */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px', margin: '0 auto' }}>
+            <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input
               type="text"
-              placeholder="Search book title, author or keyword..."
+              placeholder="Search 100 AI models, pros, cons or pricing..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
                 padding: '10px 14px 10px 38px',
-                background: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: '4px',
-                color: '#111111',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                borderRadius: '6px',
+                color: '#0f172a',
                 fontSize: '13px',
                 outline: 'none'
               }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', whiteSpace: 'nowrap' }}>
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', overflowX: 'auto', paddingBottom: '4px' }}>
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 style={{
-                  padding: '6px 12px',
-                  borderRadius: '4px',
+                  padding: '6px 14px',
+                  borderRadius: '20px',
                   fontSize: '11px',
                   fontWeight: 700,
-                  textTransform: 'uppercase',
                   cursor: 'pointer',
-                  border: selectedCategory === cat ? '1px solid #111111' : '1px solid #e5e7eb',
-                  background: selectedCategory === cat ? '#111111' : '#ffffff',
-                  color: selectedCategory === cat ? '#ffffff' : '#374151',
-                  flexShrink: 0
+                  border: selectedCategory === cat ? '1px solid #0f172a' : '1px solid #cbd5e1',
+                  background: selectedCategory === cat ? '#0f172a' : '#ffffff',
+                  color: selectedCategory === cat ? '#ffffff' : '#475569',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 {cat}
@@ -146,140 +87,124 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* BOOK LIST VIEW */}
-        {loading ? (
-          <div style={{ padding: '60px', textAlign: 'center', color: '#6b7280' }}>Loading published books...</div>
-        ) : filteredBooks.length === 0 ? (
-          <div style={{ padding: '40px', textAlign: 'center', border: '1px dashed #d1d5db', borderRadius: '6px', color: '#6b7280' }}>
-            No books found.
+        {/* 5-COLUMN TABLE LAYOUT */}
+        {filteredTools.length === 0 ? (
+          <div style={{ padding: '40px', textAlign: 'center', background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#64748b' }}>
+            No AI tools match your search criteria.
           </div>
         ) : (
-          <div>
-            {/* FEATURED HERO BOOK (Top Big Image & Title) */}
-            {featuredBook && (
-              <article style={{ marginBottom: '36px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }}>
-                <div 
-                  onClick={() => setDetailBook(featuredBook)}
-                  style={{ width: '100%', height: '240px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', cursor: 'pointer' }}
-                >
-                  <img 
-                    src={featuredBook.coverUrl} 
-                    alt={featuredBook.title} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
-                  />
-                </div>
-
-                <div style={{ fontSize: '10px', fontWeight: 900, color: '#111', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>
-                  FEATURED GUIDE • {featuredBook.readTime}
-                </div>
-
-                <h2 
-                  onClick={() => setDetailBook(featuredBook)}
-                  style={{ fontSize: '24px', fontFamily: 'serif', fontWeight: 800, color: '#111111', margin: '0 0 10px 0', lineHeight: '1.25', cursor: 'pointer' }}
-                >
-                  {featuredBook.title}
-                </h2>
-
-                <p style={{ fontSize: '14px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 16px 0' }}>
-                  {featuredBook.summary}
-                </p>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <button 
-                    onClick={() => setDetailBook(featuredBook)}
-                    style={{ background: 'none', border: 'none', color: '#111', fontSize: '12px', textDecoration: 'none', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+          <div style={{ overflowX: 'auto', background: '#ffffff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '1000px', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ background: '#0f172a', color: '#ffffff', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <th style={{ padding: '14px 16px', width: '18%' }}>AI Model / Tool</th>
+                  <th style={{ padding: '14px 16px', width: '22%' }}>Recommend For (သင့်တော်သူများ)</th>
+                  <th style={{ padding: '14px 16px', width: '24%' }}>Pros (အားသာချက်များ)</th>
+                  <th style={{ padding: '14px 16px', width: '22%' }}>Cons (အားနည်းချက်များ)</th>
+                  <th style={{ padding: '14px 16px', width: '14%' }}>Pricing (ဈေးနှုန်း)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTools.map((tool, idx) => (
+                  <tr 
+                    key={tool.id} 
+                    style={{ 
+                      borderBottom: '1px solid #e2e8f0',
+                      background: idx % 2 === 0 ? '#ffffff' : '#f8fafc'
+                    }}
                   >
-                    <BookOpen size={14} /> Read Chapter
-                  </button>
-
-                  {featuredBook.downloadUrl && (
-                    <button 
-                      onClick={() => window.open(featuredBook.downloadUrl, '_blank')}
-                      style={{ background: '#111', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Download size={13} /> PDF
-                    </button>
-                  )}
-                </div>
-              </article>
-            )}
-
-            {/* REMAINING BOOKS (Row Style: Small Thumbnail Right / Text Left) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              {remainingBooks.map((book) => (
-                <article 
-                  key={book.id}
-                  style={{
-                    borderBottom: '1px solid #f3f4f6',
-                    paddingBottom: '20px',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: '16px',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  {/* Text Section (Left) */}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '9px', fontWeight: 900, color: '#666', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '4px' }}>
-                      {book.category} • {book.readTime}
-                    </div>
-
-                    <h3 
-                      onClick={() => setDetailBook(book)}
-                      style={{ fontSize: '16px', fontFamily: 'serif', fontWeight: 700, color: '#111111', margin: '0 0 6px 0', lineHeight: '1.3', cursor: 'pointer' }}
-                    >
-                      {book.title}
-                    </h3>
-
-                    <p style={{ fontSize: '12px', color: '#555', lineHeight: '1.4', margin: '0 0 10px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {book.summary}
-                    </p>
-
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                      <button 
-                        onClick={() => setDetailBook(book)}
-                        style={{ background: 'none', border: 'none', color: '#111', fontSize: '11px', fontWeight: 700, cursor: 'pointer', padding: 0 }}
-                      >
-                        Read Chapter
-                      </button>
-                      {book.downloadUrl && (
-                        <button 
-                          onClick={() => window.open(book.downloadUrl, '_blank')}
-                          style={{ background: 'none', border: 'none', color: '#666', fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                    {/* Col 1: AI Model */}
+                    <td style={{ padding: '16px', verticalAlign: 'top' }}>
+                      <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '14px', marginBottom: '4px' }}>
+                        {tool.title}
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '10px' }}>
+                        {tool.subtitle}
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button
+                          onClick={() => setDetailTool(tool)}
+                          style={{ fontSize: '11px', padding: '4px 8px', background: '#e2e8f0', color: '#0f172a', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600 }}
                         >
-                          PDF
+                          Details
                         </button>
-                      )}
-                    </div>
-                  </div>
+                        <button
+                          onClick={() => window.open(tool.toolUrl, '_blank')}
+                          style={{ fontSize: '11px', padding: '4px 8px', background: '#0f172a', color: '#ffffff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                        >
+                          Try <ExternalLink size={10} />
+                        </button>
+                      </div>
+                    </td>
 
-                  {/* Thumbnail Image (Right) */}
-                  <div 
-                    onClick={() => setDetailBook(book)}
-                    style={{ width: '100px', minWidth: '100px', height: '80px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', cursor: 'pointer' }}
-                  >
-                    <img 
-                      src={book.coverUrl} 
-                      alt={book.title} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
-                    />
-                  </div>
-                </article>
-              ))}
-            </div>
+                    {/* Col 2: Recommend For */}
+                    <td style={{ padding: '16px', verticalAlign: 'top' }}>
+                      <div style={{ display: 'flex', gap: '6px', marginBottom: '6px' }}>
+                        <UserCheck size={16} style={{ color: '#2563eb', flexShrink: 0, marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontWeight: 600, color: '#1e293b' }}>{tool.recommendFor.en}</div>
+                          <div style={{ color: '#475569', fontSize: '12px', marginTop: '4px' }}>{tool.recommendFor.my}</div>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Col 3: Pros */}
+                    <td style={{ padding: '16px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {tool.pros.map((pro, pIdx) => (
+                          <li key={pIdx} style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                            <CheckCircle size={15} style={{ color: '#16a34a', flexShrink: 0, marginTop: '2px' }} />
+                            <div>
+                              <strong style={{ color: '#15803d' }}>{pro.en}</strong>
+                              <div style={{ color: '#475569', fontSize: '12px' }}>{pro.my}</div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+
+                    {/* Col 4: Cons */}
+                    <td style={{ padding: '16px', verticalAlign: 'top' }}>
+                      <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {tool.cons.map((con, cIdx) => (
+                          <li key={cIdx} style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                            <XCircle size={15} style={{ color: '#dc2626', flexShrink: 0, marginTop: '2px' }} />
+                            <div>
+                              <strong style={{ color: '#b91c1c' }}>{con.en}</strong>
+                              <div style={{ color: '#475569', fontSize: '12px' }}>{con.my}</div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+
+                    {/* Col 5: Pricing */}
+                    <td style={{ padding: '16px', verticalAlign: 'top' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <DollarSign size={16} style={{ color: '#0284c7', flexShrink: 0, marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontWeight: 700, color: '#0369a1' }}>{tool.pricing.en}</div>
+                          <div style={{ color: '#475569', fontSize: '12px', marginTop: '4px' }}>{tool.pricing.my}</div>
+                        </div>
+                      </div>
+                    </td>
+
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
-        {/* Book Chapter Modal */}
-        {detailBook && (
+        {/* DETAIL MODAL */}
+        {detailTool && (
           <div style={{ 
             position: 'fixed', 
             top: 0, 
             left: 0, 
             width: '100vw', 
             height: '100vh', 
-            background: 'rgba(0,0,0,0.6)', 
+            background: 'rgba(15, 23, 42, 0.6)', 
             backdropFilter: 'blur(4px)',
             display: 'flex', 
             alignItems: 'center', 
@@ -290,56 +215,82 @@ export default function BusinessAIBookKitPage() {
             <div style={{ 
               background: '#ffffff', 
               width: '100%', 
-              maxWidth: '600px', 
-              borderRadius: '8px', 
+              maxWidth: '650px', 
+              borderRadius: '12px', 
               padding: '24px', 
-              boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
               position: 'relative',
-              maxHeight: '85vh',
+              maxHeight: '90vh',
               overflowY: 'auto'
             }}>
               <button 
-                onClick={() => setDetailBook(null)}
-                style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+                onClick={() => setDetailTool(null)}
+                style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', cursor: 'pointer', color: '#64748b' }}
               >
                 <X size={20} />
               </button>
 
-              <div style={{ fontSize: '10px', fontWeight: 900, color: '#111', textTransform: 'uppercase', marginBottom: '6px' }}>
-                {detailBook.category} • {detailBook.readTime}
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', textTransform: 'uppercase', marginBottom: '4px' }}>
+                {detailTool.category} • {detailTool.pricingType}
               </div>
 
-              <h2 style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
-                {detailBook.title}
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>
+                {detailTool.title}
               </h2>
 
-              <div style={{ fontSize: '13px', color: '#374151', lineHeight: 1.7, whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
-                {detailBook.fullContent}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '13px', color: '#334155' }}>
+                <div>
+                  <h4 style={{ margin: '0 0 4px 0', color: '#0f172a', fontWeight: 700 }}>Best Suitable For (သင့်တော်သူများ)</h4>
+                  <p style={{ margin: 0 }}>{detailTool.recommendFor.en}</p>
+                  <p style={{ margin: '2px 0 0 0', color: '#64748b' }}>{detailTool.recommendFor.my}</p>
+                </div>
+
+                <div>
+                  <h4 style={{ margin: '0 0 6px 0', color: '#15803d', fontWeight: 700 }}>Key Advantages (အားသာချက်များ)</h4>
+                  {detailTool.pros.map((p, i) => (
+                    <div key={i} style={{ marginBottom: '6px' }}>
+                      • <strong>{p.en}</strong> — <span>{p.my}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <h4 style={{ margin: '0 0 6px 0', color: '#b91c1c', fontWeight: 700 }}>Limitations (အားနည်းချက်များ)</h4>
+                  {detailTool.cons.map((c, i) => (
+                    <div key={i} style={{ marginBottom: '6px' }}>
+                      • <strong>{c.en}</strong> — <span>{c.my}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <h4 style={{ margin: '0 0 4px 0', color: '#0369a1', fontWeight: 700 }}>Pricing Breakdown (ဈေးနှုန်း)</h4>
+                  <p style={{ margin: 0 }}>{detailTool.pricing.en}</p>
+                  <p style={{ margin: '2px 0 0 0', color: '#64748b' }}>{detailTool.pricing.my}</p>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px' }}>
-                {detailBook.downloadUrl && (
-                  <button 
-                    onClick={() => window.open(detailBook.downloadUrl, '_blank')}
-                    style={{
-                      flex: 1,
-                      background: '#111111',
-                      color: '#ffffff',
-                      border: 'none',
-                      padding: '10px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    <Download size={14} /> Download PDF Version
-                  </button>
-                )}
+              <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
+                <button 
+                  onClick={() => window.open(detailTool.toolUrl, '_blank')}
+                  style={{
+                    flex: 1,
+                    background: '#0f172a',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <ExternalLink size={15} /> Open Official Website
+                </button>
               </div>
             </div>
           </div>
