@@ -7,7 +7,8 @@ import {
   Search, 
   Download, 
   User, 
-  Clock 
+  Clock,
+  Sparkles
 } from 'lucide-react';
 
 interface BookItem {
@@ -51,7 +52,7 @@ export default function BusinessAIBookKitPage() {
           title: item.title,
           subtitle: item.excerpt || 'Business & AI Execution Guide',
           author: 'Yang Karg',
-          category: 'Business Strategy',
+          category: item.sub_category || 'Business Strategy',
           coverUrl: item.source_urls && item.source_urls[0] ? item.source_urls[0] : 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop',
           readTime: '30 mins read',
           publishedDate: new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
@@ -77,67 +78,50 @@ export default function BusinessAIBookKitPage() {
   });
 
   return (
-    <div style={{ background: '#f8f9fa', color: '#1a1a1a', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', width: '100%', overflowX: 'hidden', boxSizing: 'border-box' }} className="py-6 px-5 sm:py-10 sm:px-8">
-      <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
+    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans py-8 px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         
-        {/* Top Header Tag */}
-        <div style={{ fontSize: '11px', color: '#c9b17b', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
-          ADMIN PUBLISHED KNOWLEDGE ASSETS
+        {/* Header Section */}
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold tracking-wider uppercase">
+            <Sparkles size={13} /> Admin Published Knowledge Assets
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-slate-900">
+            Business & AI Book Kit
+          </h1>
+
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
+          </p>
         </div>
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl" style={{ fontWeight: 700, fontFamily: 'serif', color: '#111111', marginBottom: '12px', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
-          Business & AI Book Kit
-        </h1>
-
-        {/* Subtitle Description */}
-        <p style={{ color: '#666666', fontSize: '14px', maxWidth: '720px', lineHeight: 1.6, marginBottom: '28px', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
-          Official books, research blueprints, and execution guides published via the Admin Console. Curated for immediate execution and high-leverage decision making.
-        </p>
-
-        {/* Search and Filters Bar */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          {/* Search Bar */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '380px', boxSizing: 'border-box' }}>
-            <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+        {/* Search & Filter Controls */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+          
+          {/* Search Input */}
+          <div className="relative w-full md:w-80">
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search book title, author or keyword..."
+              placeholder="Search title, author, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 14px 10px 38px',
-                background: '#ffffff',
-                border: '1px solid #e5e7eb',
-                borderRadius: '6px',
-                color: '#111111',
-                fontSize: '13px',
-                outline: 'none',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.02)',
-                boxSizing: 'border-box'
-              }}
+              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 transition-all shadow-sm"
             />
           </div>
 
-          {/* Filters Buttons */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto" style={{ whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
+          {/* Filter Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                style={{
-                  padding: '7px 14px',
-                  borderRadius: '6px',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  border: selectedCategory === cat ? '1px solid #111111' : '1px solid #e5e7eb',
-                  background: selectedCategory === cat ? '#171a18' : '#ffffff',
-                  color: selectedCategory === cat ? '#ffffff' : '#4b5563',
-                  transition: 'all 0.15s ease',
-                  flexShrink: 0
-                }}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 border ${
+                  selectedCategory === cat
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                }`}
               >
                 {cat}
               </button>
@@ -145,112 +129,93 @@ export default function BusinessAIBookKitPage() {
           </div>
         </div>
 
-        {/* Loading & Empty States */}
+        {/* Dynamic Content View */}
         {loading ? (
-          <div style={{ padding: '40px', textAlign: 'center', color: '#6b7280', fontSize: '14px' }}>Loading published books from database...</div>
+          <div className="py-20 text-center text-slate-500 text-sm">
+            Loading published books from database...
+          </div>
         ) : filteredBooks.length === 0 ? (
-          <div style={{ padding: '40px', textAlign: 'center', background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#6b7280', fontSize: '14px' }}>
-            No books found. Publish a book from the Admin Console using the <strong>Business & AI Book Kit</strong> category.
+          <div className="py-16 text-center bg-white border border-dashed border-slate-300 rounded-xl text-slate-500 text-sm">
+            No books found. Publish a book from the Admin Console using the <span className="font-semibold text-slate-700">Business & AI Book Kit</span> category.
           </div>
         ) : (
-          /* Books Grid View */
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          /* Professional Book Grid (Card Design with Proper Image Ratio) */
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredBooks.map((book) => (
               <div 
                 key={book.id} 
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between"
-                style={{ boxSizing: 'border-box' }}
+                className="bg-white border border-slate-200/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row overflow-hidden group"
               >
-                <div>
-                  {/* Book Cover Image Thumbnail */}
-                  <div className="w-full h-52 sm:h-64 relative bg-[#171a18] overflow-hidden">
-                    <img 
-                      src={book.coverUrl} 
-                      alt={book.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.95, display: 'block' }}
-                    />
-                  </div>
+                {/* Fixed Sized Compact Book Cover Container */}
+                <div className="sm:w-44 w-full shrink-0 bg-slate-900 relative aspect-[3/4] sm:aspect-auto overflow-hidden flex items-center justify-center p-3">
+                  <img 
+                    src={book.coverUrl} 
+                    alt={book.title}
+                    className="w-full h-full object-contain rounded shadow-md group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
 
-                  {/* Book Details */}
-                  <div className="p-5 sm:p-6">
-                    {/* Category & Meta */}
-                    <div className="flex justify-between items-center mb-2.5 flex-wrap gap-2">
-                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#c9b17b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                {/* Content Section */}
+                <div className="p-5 flex flex-col justify-between flex-1 space-y-4">
+                  <div className="space-y-2">
+                    {/* Category & Read Time */}
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-amber-600 uppercase tracking-wider text-[11px]">
                         {book.category}
                       </span>
-                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                      <span className="flex items-center gap-1 text-slate-400">
                         <Clock size={12} /> {book.readTime}
-                      </div>
+                      </span>
                     </div>
 
                     {/* Title & Subtitle */}
-                    <h3 className="text-lg sm:text-xl font-bold text-[#111111] mb-1.5 font-serif line-clamp-2" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
-                      {book.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-500 mb-4 line-clamp-2" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
-                      {book.subtitle}
-                    </p>
+                    <div>
+                      <h3 className="text-base font-bold font-serif text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1">
+                        {book.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                        {book.subtitle}
+                      </p>
+                    </div>
 
-                    {/* Author Tag & Date */}
-                    <div className="flex items-center justify-between text-xs text-gray-600 mb-4 font-medium border-t border-gray-100 pt-3">
-                      <div className="flex items-center gap-1.5">
-                        <User size={12} style={{ color: '#c9b17b' }} /> By {book.author}
-                      </div>
-                      <span className="text-gray-400">{book.publishedDate}</span>
+                    {/* Author & Date */}
+                    <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1 border-t border-slate-100">
+                      <span className="flex items-center gap-1 text-slate-700">
+                        <User size={12} className="text-amber-600" /> {book.author}
+                      </span>
+                      <span className="text-slate-400 text-[11px]">{book.publishedDate}</span>
                     </div>
 
                     {/* Summary */}
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-2 line-clamp-3" style={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
+                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
                       {book.summary}
                     </p>
                   </div>
-                </div>
 
-                {/* Bottom Action Buttons */}
-                <div className="p-5 sm:p-6 pt-0 border-t border-gray-100 flex gap-3 mt-auto">
-                  <button style={{
-                    flex: 1,
-                    background: '#171a18',
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '10px 14px',
-                    borderRadius: '6px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px'
-                  }}>
-                    <BookOpen size={14} /> Read Chapter
-                  </button>
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 pt-3 border-t border-slate-100 mt-auto">
+                    <button className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                      <BookOpen size={14} /> Read Chapter
+                    </button>
 
-                  {/* PDF Download Button */}
-                  <button 
-                    onClick={() => {
-                      if (book.downloadUrl) {
-                        window.open(book.downloadUrl, '_blank');
-                      } else {
-                        alert('PDF link not available for this book yet.');
-                      }
-                    }}
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
-                      color: book.downloadUrl ? '#374151' : '#9ca3af',
-                      padding: '10px 14px',
-                      borderRadius: '6px',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                      cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    <Download size={14} /> PDF
-                  </button>
+                    <button 
+                      onClick={() => {
+                        if (book.downloadUrl) {
+                          window.open(book.downloadUrl, '_blank');
+                        } else {
+                          alert('PDF link not available for this book yet.');
+                        }
+                      }}
+                      disabled={!book.downloadUrl}
+                      className={`py-2 px-3 rounded-md text-xs font-medium border flex items-center gap-1.5 transition-colors ${
+                        book.downloadUrl 
+                          ? 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300' 
+                          : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed'
+                      }`}
+                    >
+                      <Download size={14} /> PDF
+                    </button>
+                  </div>
                 </div>
 
               </div>
