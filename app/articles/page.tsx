@@ -78,14 +78,14 @@ export default function BusinessAIBookKitPage() {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#111111' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 24px', fontFamily: 'sans-serif' }}>
+      <div style={{ maxWidth: '1100px', margin: '0 auto', fontFamily: 'sans-serif' }} className="py-6 px-4 sm:py-10 sm:px-6">
         
         {/* TOP HEADER SECTION */}
         <div style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '20px', marginBottom: '28px' }}>
           <div style={{ fontSize: '11px', color: '#b8860b', letterSpacing: '1.5px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
             BUILD WITH EVIDENCE
           </div>
-          <h1 style={{ fontSize: '28px', fontFamily: 'serif', margin: '0 0 8px 0', color: '#111111', fontWeight: 700 }}>
+          <h1 className="text-2xl sm:text-3xl" style={{ fontFamily: 'serif', margin: '0 0 8px 0', color: '#111111', fontWeight: 700 }}>
             Business & AI Book Kit
           </h1>
           <p style={{ color: '#555555', fontSize: '14px', margin: 0, lineHeight: '1.5' }}>
@@ -94,7 +94,7 @@ export default function BusinessAIBookKitPage() {
         </div>
 
         {/* SEARCH & FILTERS BAR */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '32px' }}>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div style={{ position: 'relative', width: '100%', maxWidth: '340px' }}>
             <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
             <input
@@ -146,7 +146,7 @@ export default function BusinessAIBookKitPage() {
             No books found.
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {filteredBooks.map((book) => (
               <article 
                 key={book.id}
@@ -157,12 +157,12 @@ export default function BusinessAIBookKitPage() {
                   overflow: 'hidden',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                   display: 'flex',
-                  flexDirection: 'row', // ဘယ်ဘက်ပုံ၊ ညာဘက်စာသား အမြဲဖြစ်စေရန်
+                  flexDirection: 'row',
                   alignItems: 'stretch'
                 }}
               >
-                {/* Left Column: Book Cover Image (ဘယ်ဘက်တွင် ပုံသေ ဓာတ်ပုံပြမည် - အကျယ် 260px) */}
-                <div style={{ width: '260px', minWidth: '260px', backgroundColor: '#f3f4f6', overflow: 'hidden' }}>
+                {/* Cover Image */}
+                <div className="w-[140px] sm:w-[220px] min-w-[140px] sm:min-w-[220px]" style={{ backgroundColor: '#f3f4f6', overflow: 'hidden' }}>
                   <img 
                     src={book.coverUrl} 
                     alt={book.title} 
@@ -173,11 +173,11 @@ export default function BusinessAIBookKitPage() {
                   />
                 </div>
 
-                {/* Right Column: Content & Action Buttons */}
-                <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+                {/* Content & Action Buttons */}
+                <div className="p-4 sm:p-6" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
                   <div>
                     {/* Category & Read Time */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                       <span style={{ fontSize: '11px', fontWeight: 700, color: '#b8860b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         {book.category}
                       </span>
@@ -187,23 +187,23 @@ export default function BusinessAIBookKitPage() {
                     </div>
 
                     {/* Title */}
-                    <h2 style={{ fontSize: '22px', fontFamily: 'serif', color: '#111111', fontWeight: 700, margin: '0 0 10px 0', lineHeight: '1.3' }}>
+                    <h2 className="text-lg sm:text-2xl" style={{ fontFamily: 'serif', color: '#111111', fontWeight: 700, margin: '0 0 6px 0', lineHeight: '1.2' }}>
                       {book.title}
                     </h2>
 
                     {/* Summary / Description */}
-                    <p style={{ fontSize: '14px', color: '#4b5563', lineHeight: '1.6', margin: '0 0 16px 0' }}>
+                    <p className="text-xs sm:text-sm" style={{ color: '#4b5563', lineHeight: '1.5', margin: '0 0 12px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {book.summary}
                     </p>
 
                     {/* Author & Date */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#4b5563', fontWeight: 500, marginBottom: '20px' }}>
-                      <User size={13} style={{ color: '#b8860b' }} /> By {book.author} • {book.publishedDate}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#4b5563', fontWeight: 500, marginBottom: '16px' }}>
+                      <User size={12} style={{ color: '#b8860b' }} /> By {book.author} • {book.publishedDate}
                     </div>
                   </div>
 
                   {/* Bottom Action Buttons (Read Chapter & PDF) */}
-                  <div style={{ paddingTop: '16px', borderTop: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ paddingTop: '12px', borderTop: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <button style={{
                       flex: 1,
                       background: '#171a18',
@@ -217,9 +217,9 @@ export default function BusinessAIBookKitPage() {
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '8px'
+                      gap: '6px'
                     }}>
-                      <BookOpen size={14} /> Read Chapter
+                      <BookOpen size={13} /> Read Chapter
                     </button>
 
                     <button 
@@ -241,10 +241,10 @@ export default function BusinessAIBookKitPage() {
                         cursor: book.downloadUrl ? 'pointer' : 'not-allowed',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '8px'
+                        gap: '6px'
                       }}
                     >
-                      <Download size={14} /> PDF
+                      <Download size={13} /> PDF
                     </button>
                   </div>
 
