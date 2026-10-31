@@ -76,7 +76,6 @@ export default function MagazineListPage() {
     return matchesSearch;
   });
 
-  // Fast Company style: First article is featured hero, rest are list items
   const featuredArticle = filteredMagazines.length > 0 ? filteredMagazines[0] : null;
   const remainingArticles = filteredMagazines.length > 1 ? filteredMagazines.slice(1) : [];
 
@@ -84,13 +83,13 @@ export default function MagazineListPage() {
     <div style={{ background: '#ffffff', color: '#111111', minHeight: '100vh', padding: '24px 16px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
         
-        {/* TOP BRAND HEADER (Fast Company Style) */}
+        {/* TOP BRAND HEADER (AXU-II MAGAZINE) */}
         <div style={{ borderBottom: '2px solid #111111', paddingBottom: '16px', marginBottom: '24px', textAlign: 'center' }}>
-          <div style={{ fontSize: '10px', color: '#666', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '4px' }}>
+          <div style={{ fontSize: '10px', color: '#b8860b', letterSpacing: '1.5px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>
             AXU-II KNOWLEDGE OS
           </div>
           <h1 style={{ fontSize: '32px', fontWeight: 900, fontFamily: 'serif', letterSpacing: '-1px', margin: 0, textTransform: 'uppercase' }}>
-            FAST COMPANY
+            AXU-II MAGAZINE
           </h1>
         </div>
 
@@ -149,7 +148,7 @@ export default function MagazineListPage() {
           </div>
         ) : (
           <div>
-            {/* FEATURED HERO ARTICLE (Top Big Image & Title like Fast Company) */}
+            {/* FEATURED HERO ARTICLE */}
             {featuredArticle && (() => {
               const rawUrl = featuredArticle.source_urls && featuredArticle.source_urls.length > 0 ? featuredArticle.source_urls[0] : null;
               const imageUrl = getValidImageUrl(rawUrl || '');
@@ -169,7 +168,7 @@ export default function MagazineListPage() {
                     </div>
                   )}
 
-                  <div style={{ fontSize: '10px', fontWeight: 900, color: '#111', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>
+                  <div style={{ fontSize: '10px', fontWeight: 900, color: '#b8860b', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>
                     FEATURED • {new Date(featuredArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </div>
 
@@ -179,8 +178,18 @@ export default function MagazineListPage() {
                     </h2>
                   </Link>
 
-                  <p style={{ fontSize: '14px', color: '#4b5563', lineHeight: '1.5', margin: '0 0 16px 0' }}>
-                    {featuredArticle.excerpt || (featuredArticle.body_md ? featuredArticle.body_md.slice(0, 140) + '...' : '')}
+                  {/* Clean Excerpt Truncation */}
+                  <p style={{ 
+                    fontSize: '14px', 
+                    color: '#4b5563', 
+                    lineHeight: '1.5', 
+                    margin: '0 0 16px 0',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
+                    {featuredArticle.excerpt || (featuredArticle.body_md ? featuredArticle.body_md.slice(0, 160) + '...' : '')}
                   </p>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -193,16 +202,16 @@ export default function MagazineListPage() {
 
                     <button 
                       onClick={() => setDetailArticle(featuredArticle)}
-                      style={{ background: 'none', border: 'none', color: '#666', fontSize: '12px', cursor: 'pointer', fontWeight: 600 }}
+                      style={{ background: 'none', border: 'none', color: '#b8860b', fontSize: '12px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                     >
-                      Quick Preview
+                      <Info size={13} /> Quick Preview
                     </button>
                   </div>
                 </article>
               );
             })()}
 
-            {/* REMAINING ARTICLES (Fast Company Row Style: Small Thumbnail Right / Text Left on Mobile) */}
+            {/* REMAINING ARTICLES (Compact Row Style) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {remainingArticles.map((item) => {
                 const rawUrl = item.source_urls && item.source_urls.length > 0 ? item.source_urls[0] : null;
@@ -224,7 +233,7 @@ export default function MagazineListPage() {
                     {/* Text Section (Left) */}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: '9px', fontWeight: 900, color: '#666', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '4px' }}>
-                        WORK LIFE • {new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        INSIGHTS • {new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       </div>
 
                       <Link href={`/magazine/${item.id}`} style={{ textDecoration: 'none' }}>
@@ -233,12 +242,28 @@ export default function MagazineListPage() {
                         </h3>
                       </Link>
 
-                      <p style={{ fontSize: '12px', color: '#555', lineHeight: '1.4', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      <p style={{ 
+                        fontSize: '12px', 
+                        color: '#555', 
+                        lineHeight: '1.4', 
+                        margin: '0 0 8px 0', 
+                        display: '-webkit-box', 
+                        WebkitLineClamp: 2, 
+                        WebkitBoxOrient: 'vertical', 
+                        overflow: 'hidden' 
+                      }}>
                         {item.excerpt || (item.body_md ? item.body_md.slice(0, 100) + '...' : '')}
                       </p>
+
+                      <button 
+                        onClick={() => setDetailArticle(item)}
+                        style={{ background: 'none', border: 'none', color: '#b8860b', fontSize: '11px', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                      >
+                        Quick Preview
+                      </button>
                     </div>
 
-                    {/* Thumbnail Image (Right - 100px width fixed for compact mobile layout) */}
+                    {/* Thumbnail Image (Right) */}
                     {imageUrl && (
                       <div 
                         onClick={() => setDetailArticle(item)}
@@ -292,8 +317,8 @@ export default function MagazineListPage() {
                 <X size={20} />
               </button>
 
-              <div style={{ fontSize: '10px', fontWeight: 900, color: '#111', textTransform: 'uppercase', marginBottom: '6px' }}>
-                FAST COMPANY • {new Date(detailArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              <div style={{ fontSize: '10px', fontWeight: 900, color: '#b8860b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                AXU-II MAGAZINE • {new Date(detailArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </div>
 
               <h2 style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'serif', color: '#111111', marginBottom: '12px' }}>
@@ -323,7 +348,7 @@ export default function MagazineListPage() {
                     gap: '6px'
                   }}
                 >
-                  <BookOpen size={14} /> Open Full Story
+                  <BookOpen size={14} /> Open Full Story Page
                 </Link>
               </div>
             </div>
