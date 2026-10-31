@@ -183,12 +183,14 @@ export default function MagazineListPage() {
           </div>
         ) : (
           <div>
-            {/* RESPONSIVE GRID CONTAINER (Mobile: 1 column, Desktop: 3 columns) */}
             <style dangerouslySetInnerHTML={{ __html: `
               .magazine-grid {
                 display: flex;
                 flex-direction: column;
                 gap: 24px;
+              }
+              .hero-img {
+                height: 260px;
               }
               @media (min-width: 1024px) {
                 .magazine-grid {
@@ -197,21 +199,25 @@ export default function MagazineListPage() {
                   gap: 32px;
                   align-items: start;
                 }
+                .hero-img {
+                  height: 320px;
+                }
               }
             `}} />
 
             <div className="magazine-grid">
               
-              {/* FEATURED HERO STORY (Shown first on mobile for better flow) */}
+              {/* FEATURED HERO STORY */}
               {heroArticle && (
-                <div style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
+                <div style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }}>
                   <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#6b7280', marginBottom: '8px' }}>
                     FEATURED STORY • {new Date(heroArticle.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </span>
 
                   <div 
                     onClick={() => setDetailArticle(heroArticle)}
-                    style={{ width: '100%', height: '260px', sm: { height: '320px' }, background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', cursor: 'pointer' }}
+                    className="hero-img"
+                    style={{ width: '100%', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', cursor: 'pointer' }}
                   >
                     <img 
                       src={getValidImageUrl(heroArticle.source_urls?.[0])} 
@@ -222,7 +228,7 @@ export default function MagazineListPage() {
 
                   <h2 
                     onClick={() => setDetailArticle(heroArticle)}
-                    style={{ fontSize: '22px', sm: { fontSize: '26px' }, fontFamily: 'serif', fontWeight: 900, color: '#111111', margin: '0 0 12px 0', lineHeight: '1.2', cursor: 'pointer' }}
+                    style={{ fontSize: '22px', fontFamily: 'serif', fontWeight: 900, color: '#111111', margin: '0 0 12px 0', lineHeight: '1.2', cursor: 'pointer' }}
                   >
                     {heroArticle.title}
                   </h2>
@@ -249,7 +255,7 @@ export default function MagazineListPage() {
               )}
 
               {/* LEFT COLUMN: LATEST INSIGHTS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }} className="lg:border-b-0 lg:border-r lg:pr-6">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '24px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #111', paddingBottom: '6px' }}>
                   Latest Insights
                 </div>
